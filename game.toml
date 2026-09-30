@@ -7,6 +7,9 @@ id = "SCUS-94227"
 region = "USA"
 players = 1
 exe = "disc/SCUS_942.27"
+disc = "disc/MediEvil (USA).cue"
+discs = ["disc/MediEvil (USA).cue"]
+disc_serials = ["SCUS-94227"]
 load_address = "0x801B0000"
 entry_pc = "0x801B5CD0"
 text_size = "0x00020800"
@@ -15,18 +18,25 @@ stack_base = "0x801FFFF0"
 # Digests are for data Track 01 (first BINARY FILE / TRACK 01).
 [prepare_disc]
 out_dir = "disc"
-bin_name = "disc1.bin"
-cue_name = "disc1.cue"
+bin_name = "MediEvil (USA) (Track 1).bin"
+cue_name = "MediEvil (USA).cue"
 boot_exe = "SCUS_942.27"
-known_sizes = [561744624]
+known_sizes = [528755472, 561744624]
 known_md5 = [
+  "53d908f5bd11d86f3deda75c2da3b750",
   "4be211c0df746cdd8c3905467eaa103e",
 ]
 known_sha1 = [
+  "928257764f5107c9d27aa3e2d469c43aee591abd",
   "8536f740358f05ab15e501da41572df1eddfc1ce",
+]
+known_crc32 = [
+  "846f15a7",
+  "",
 ]
 
 [recompiler]
+bios_config = "psxrecomp/bios/SCPH1001.toml"
 seeds = "seeds/ghidra_funcs.txt"
 out_dir = "generated"
 strict = true
