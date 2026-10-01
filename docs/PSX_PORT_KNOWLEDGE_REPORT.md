@@ -4,7 +4,7 @@
 
 - Supported revision: USA `SCUS-94227`
 - Architecture: PSXRecomp static recompilation with interpreter fallback
-- License boundary: project files use `GPL-3.0-only`; framework and game data
+- License boundary: project files use `PolyForm Noncommercial 1.0.0`; framework and game data
   keep separate rights and licenses
 - Source provenance gap: the legacy Wave 1 package has no
   `project-manifest.toml` or `docs/FEASIBILITY.md`
