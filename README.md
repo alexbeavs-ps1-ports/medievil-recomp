@@ -52,8 +52,10 @@ BIOS/ROM/save plumbing so you are not stuck repeating each game’s wizard by ha
 ## Legal
 
 You must own the original game. Disc images under `disc/` are gitignored and
-must never be committed. This package requires a legal SCPH-1001 BIOS dump.
-OpenBIOS is not supported. Retail BIOS dumps are not redistributed.
+must never be committed. This development branch includes the MIT-licensed
+OpenBIOS as its default; an owned SCPH-1001 BIOS remains an optional alternative.
+OpenBIOS has passed intro and main-engine startup checks. Full gameplay and
+save/load qualification remain pending. Retail BIOS dumps are not redistributed.
 
 ## License
 
@@ -77,11 +79,13 @@ Optional box art under `launcher_assets/img/` may come from
 git submodule update --init --recursive
 ./psxrecomp/tools/ci/build_emitters.sh
 python3 psxrecomp/psxrecomp_cli.py generate \
-  --config game.toml --project-root . --disc disc/<your>.cue \
-  --bios /path/to/SCPH1001.BIN
+  --config game.toml --project-root . --disc disc/<your>.cue
 cmake -S . -B build-release -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-release --target psx-runtime
 ```
+
+To use your retail BIOS instead, add `--bios /path/to/SCPH1001.BIN` to Generate
+and select that BIOS in the launcher.
 
 Zip prefix for CI artifacts: `medievil-recomp`.
 

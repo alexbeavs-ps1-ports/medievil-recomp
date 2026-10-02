@@ -38,7 +38,9 @@ strict = true
 window_title = "MediEvil Recompiled"
 memcard_dir = "saves"
 bios_hle = false
-openbios = false
+# Bundled OpenBIOS is the default when no retail BIOS was explicitly chosen.
+# Intro/engine startup validated; gameplay and save/load qualification pending.
+openbios = true
 # Keep the native fallback cache available for code not covered by offline AOT.
 overlay_cache = true
 

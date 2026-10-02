@@ -5,6 +5,10 @@ branch's source inputs, AOT audit, Release build and headless startup results ar
 recorded in [ENHANCEMENTS.md](ENHANCEMENTS.md). Neither receipt establishes full
 gameplay quality.
 
+The enhancement branch also permits bundled OpenBIOS after intro, engine-byte
+and native-dispatch checks against the owned disc and a retail-BIOS comparison.
+The historical retail-only requirement below does not describe this branch.
+
 ## Scope
 
 - Game: MediEvil, USA, `SCUS-94227`

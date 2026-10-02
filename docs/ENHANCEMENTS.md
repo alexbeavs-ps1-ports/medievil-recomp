@@ -48,6 +48,48 @@ new terrain assets. Its unfinished LandMapPatch is not configured as an active
 patch. The several-thousand-line CullPatch cannot be generalized by replacing
 addresses alone.
 
+## BIOS and PsyQ HLE
+
+HLE means high-level emulation: host code implements a service's behavior
+instead of executing the original instructions. There are two boundaries:
+
+- BIOS HLE replaces kernel calls, such as event, file, thread or memory-card
+  services. RecompOne dispatches the A0/B0/C0 vectors to C# implementations and
+  initializes its own kernel-facing structures. It does not run OpenBIOS.
+- PsyQ SDK HLE replaces recognized library routines linked into the game itself.
+  Its recompiler maps named functions such as CdRead, DrawOTag, VSync and
+  PadInitDirect to host SDK implementations. A verified function name/map is
+  needed; recognizing a compatible SDK routine is separate from recompiling
+  arbitrary custom game code.
+
+RecompOne's `SdkPatches.cs` supplies the replacement map. `LibGpu.DrawOTag`
+walks the guest ordering table and submits packets directly;
+`LibGpu.DrawSync` currently returns zero. `LibEtc.VSync` provides a presentation
+and interpolation boundary, and `LibCd` manages its own commands/read state and
+callbacks. These are useful host integration points, but the examples also show
+why matching timing, DMA completion, return values and side effects matters.
+
+This approach can reduce SDK/device work and simplify faster loading, custom
+rendering and input integration. No comparative performance benchmark was run.
+It trades the original instruction-level reference for implementation and
+compatibility work, especially for games that patch kernel internals or use
+custom SDK routines. RecompOne still retains GPU/GTE/SPU/device components; HLE
+does not mean the entire game has been rewritten as a native engine.
+
+OpenBIOS is a different choice: an open-source PS1 BIOS is compiled and executed
+through PSXRecomp, preserving the game's SDK path while removing the requirement
+for a retail ROM. PSXRecomp already has a narrower optional BIOS HLE tier and a
+host scheduler. Its OpenBIOS backend declines the event-call HLE tier, so those
+kernel services execute in OpenBIOS; boot-shell skipping is independently
+available. BIOS selection and SDK replacement are separate decisions.
+
+For this port, prefer bundled OpenBIOS with retail BIOS selection available,
+then consider opt-in SDK replacements only for measured bottlenecks or a needed
+enhancement boundary. Shared signature/identity checks, MIPS-to-host adapters
+and fallback infrastructure could serve other titles. API implementation should
+be qualified against the original path rather than ported wholesale solely
+because another title boots with it.
+
 ## Owned USA disc and AOT
 
 The owned two-track dump was copied locally into ignored `disc/`.
@@ -118,6 +160,35 @@ The current framework emits warnings that its committed BIOS C has stale
 emitter fingerprints. This build linked those committed BIOS backends; they
 were not regenerated for this milestone. Visible gameplay, audio, save/load,
 level transitions, OpenGL and PGXP visual comparisons remain unvalidated.
+
+## OpenBIOS development default (2026-10-02)
+
+The inherited retail-only setting had no documented MediEvil-specific failure
+in the inspected standup receipts. This branch now allows OpenBIOS, removes the
+retail-only packaging flags and documents the bundled MIT notice. Generate
+succeeds without a BIOS argument. An explicitly selected owned SCPH-1001 ROM
+remains available; BIOS call HLE stays off in the title configuration.
+
+Two 25-second Release probes passed with OpenBIOS: normal boot and shell-skip.
+Both logs identify OPENBIOS; the latter explicitly retains LLE kernel services.
+These frame counters alone are only liveness evidence.
+
+A separate diagnostic build (Clang 22.1.8, Release/O1, PGXP tracking and debug
+tools enabled) compared OpenBIOS and SCPH-1001 using the same owned disc and
+isolated save directories. Both displayed the introductory movie, then the
+story text and dungeon intro after Start input. By 30 seconds, live main-engine
+bytes at 0x80021CA4 matched the disc. At 40 seconds the OpenBIOS run reported
+1100 distinct engine entries used through static AOT dispatch and the retail
+run reported 1102. These are observed entries, not exhaustive coverage or a
+speed comparison; the samples were not aligned by guest frame.
+
+The default-selection probe uses the actual game.toml and omits --bios, rather
+than forcing an OpenBIOS path. It selected the bundled OPENBIOS image and
+reached the same story/dungeon intro route, with matching engine bytes and 1100
+observed native engine entries by 40 seconds. Screenshots and receipts remain
+private under ignored analysis/. Full gameplay, audio and save/load qualification
+remain pending before any public release. Committed upstream BIOS backends were
+used; the earlier emitter-fingerprint warning still applies.
 
 ## Adaptive widescreen implementation direction
 

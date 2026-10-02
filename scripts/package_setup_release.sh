@@ -52,8 +52,6 @@ exec bash "${PACKAGER}" \
   --recompiler-build "${RECOMPILER_BUILD}" \
   --version-env RELEASE_VERSION \
   --disc-hint "your legally owned MediEvil disc" \
-  --bios-hint "a legal SCPH-1001 BIOS dump (required; OpenBIOS is not supported)" \
-  --omit-openbios \
   --runtime-dir mods \
   --project-file CMakeLists.txt \
   --project-file project-manifest.toml \
