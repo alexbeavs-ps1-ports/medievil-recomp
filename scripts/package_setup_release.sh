@@ -65,4 +65,5 @@ exec bash "${PACKAGER}" \
   --project-file THIRD_PARTY_NOTICES.md \
   --project-file README.md \
   --project-dir seeds \
+  --project-dir aot \
   "${EXTRA_PROJECT[@]}"

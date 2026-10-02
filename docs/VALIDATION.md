@@ -1,5 +1,10 @@
 # MediEvil validation receipt
 
+The receipt below records the original standup. The 2026-10-02 enhancement
+branch's source inputs, AOT audit, Release build and headless startup results are
+recorded in [ENHANCEMENTS.md](ENHANCEMENTS.md). Neither receipt establishes full
+gameplay quality.
+
 ## Scope
 
 - Game: MediEvil, USA, `SCUS-94227`
