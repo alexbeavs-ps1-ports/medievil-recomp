@@ -229,7 +229,7 @@ minimum. Movies retain their authored aspect. HUD and dialogue retain their
 original scale and remain within the central frame; separate edge anchoring
 is not enabled.
 
-The framework pin is local commit `c29e93430814288f05b05224bb232b923daf586a`
+The initial framework pin was local commit `c29e93430814288f05b05224bb232b923daf586a`
 on `feat/guarded-packed-wide-cull`, extending the latest checked upstream master
 `641537be8210f96f61a8ad69d6021844b56e30e1`. The shared addition supports
 full-instruction-guarded packed-coordinate reject predicates, including native
@@ -280,3 +280,36 @@ and live receipts remain private in ignored analysis/. Outdoor/boss overlays,
 ratios beyond the tested cases, audio and save/load still need qualification.
 The TL site was verified from original disc instructions; that level was not
 included in the live route.
+
+## Horizontal projection folding correction (2026-10-02)
+
+The current framework pin is local commit
+`3787120488cf343bb167b87b18e5b614aa752256`, extending the same upstream
+`641537be8210f96f61a8ad69d6021844b56e30e1` baseline. It remains on
+`feat/guarded-packed-wide-cull` and must be published before clean downstream
+checkouts can resolve this source branch's gitlink.
+
+A Crypt diagnostic captured a terrain GT4 with vertices (882,117), (988,130),
+(1023,152), (1023,173). Its two triangle signed areas were +1877 and -735:
+two different camera-space vertices had collapsed onto the GTE's X=1023
+saturation edge. The host renderer now recovers saturated horizontal positions
+from exact packet-address/word-validated projection shadows when the native-wide
+view is active. The title opts into this shared policy through its activation
+plugin. Guest geometry registers, packet data, vertical coordinates, collision,
+fog, subdivision and ordering-table behavior remain game-owned.
+
+The executable GPU regression restores consistent triangle winding and checks
+stock fallback for stale/missing provenance, missing depth, zero reveal and
+transport bounds. A separate PGXP test verifies the real projection transport.
+Existing GPU anchor/HUD regressions passed, and the Windows Release rebuild
+passed. OpenBIOS/OpenGL Crypt A/B captures and lateral movement exercised the
+correction at 32:9 and Fit in a 2048x490 window (1604x240 native surface).
+Screenshots and receipts remain private under ignored analysis/. This establishes
+the captured folding mechanism and live execution; it does not conclusively
+match every part of the owner's reported left-wall deformation.
+
+The remaining visual scope is unchanged: higher internal resolution is available
+in the shared renderer but the local playtest still uses native resolution;
+general geometry and perspective texture correction remain off by default.
+Extended draw distance with matching fog/ordering-table growth and an optional
+terrain-subdivision bypass are not implemented. Full visual parity is not claimed.

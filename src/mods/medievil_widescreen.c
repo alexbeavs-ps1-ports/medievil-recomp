@@ -61,6 +61,7 @@ static void activate(void) {
         fprintf(stderr, "MediEvil: expanded render memory unavailable\n");
         abort();
     }
+    psx_mod_set_native_wide_projection_correction(1);
     if (!psx_mod_option_value(PKG, "widescreen", "aspect", view, sizeof view))
         strcpy(view, "Fit");
     unsigned numerator = 16;
