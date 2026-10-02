@@ -38,6 +38,8 @@ strict = true
 window_title = "MediEvil Recompiled"
 memcard_dir = "saves"
 bios_hle = false
+# Skip the BIOS shell; OpenBIOS still initializes its kernel and loads the EXE.
+fast_boot = true
 # Bundled OpenBIOS is the default when no retail BIOS was explicitly chosen.
 # Intro/engine startup validated; gameplay and save/load qualification pending.
 openbios = true

@@ -193,6 +193,32 @@ private under ignored analysis/. Full gameplay, audio and save/load qualificatio
 remain pending before any public release. Committed upstream BIOS backends were
 used; the earlier emitter-fingerprint warning still applies.
 
+## OpenBIOS fast-boot playtest correction (2026-10-02)
+
+A live upstream query confirmed that framework HEAD/master remains
+`641537be8210f96f61a8ad69d6021844b56e30e1`, already pinned by this branch.
+There is no newer framework gitlink to adopt for this correction.
+
+The interactive launcher had persisted an explicit SCPH-1001 path in
+settings.toml and bios.cfg, overriding the title's OpenBIOS default, and had
+disabled fast_boot. The local preferences were backed up, that BIOS selection
+cleared, and boot skip enabled while preserving other preferences and saves.
+The local playtest shortcut now explicitly selects the bundled OpenBIOS.
+
+The title now defaults to runtime.fast_boot=true with bios_hle=false. This
+skips the BIOS shell through the shared boot intercept while retaining the
+recompiled OpenBIOS kernel initialization and EXE loading. It does not enable
+BIOS kernel-call HLE; other existing runtime HLE services have separate policy.
+
+Generate passed with 27 verified recipes and 48778 guarded variants; the
+Windows Release rebuild passed. A 25-second headless probe using the corrected
+real settings and no BIOS command-line override reported image=OPENBIOS,
+bios_backend=LLE and bios_boot=HLE (shell skipped), with advancing frames.
+The rebuilt interactive OpenGL playtest was then launched explicitly with
+OpenBIOS and confirmed the same BIOS/backend/boot mode in its startup log.
+Its visible game window was responsive and presented advancing frames. Full
+gameplay, audio and save/load qualification remain pending.
+
 ## Adaptive widescreen implementation direction
 
 Use Tomba's custom native-wide renderer and adaptive aspect APIs as requested.

@@ -54,6 +54,8 @@ BIOS/ROM/save plumbing so you are not stuck repeating each game’s wizard by ha
 You must own the original game. Disc images under `disc/` are gitignored and
 must never be committed. This development branch includes the MIT-licensed
 OpenBIOS as its default; an owned SCPH-1001 BIOS remains an optional alternative.
+The default skips the BIOS boot animation while retaining OpenBIOS kernel
+initialization and EXE loading. BIOS kernel-call HLE remains disabled.
 OpenBIOS has passed intro and main-engine startup checks. Full gameplay and
 save/load qualification remain pending. Retail BIOS dumps are not redistributed.
 
