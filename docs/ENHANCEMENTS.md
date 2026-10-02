@@ -1,26 +1,16 @@
-# MediEvil enhancement assessment and first implementation
+# MediEvil enhancement implementation notes
 
-Assessment date: 2026-10-02. Branch: `feat/medievil-enhancements`, based on
+Updated: 2026-10-02. Branch: `feat/medievil-enhancements`, based on
 Alex's main `f8eb216f10ef7f644b33643330b967cd29562709`.
 
-## What the two ports provide
+## Starting point
 
-BlackLabel's port uses RecompOne (C#/.NET, with BIOS and named PsyQ SDK HLE).
-Its [v0.1b release](https://github.com/BlackLabelHQ/MediEvilRecomp/releases/tag/v0.1b)
-advertises widescreen, adjustable aspect and draw distance, PGXP, revised terrain
-rendering and frame interpolation. Completion/chalice/item support is the
-authors' claim; this assessment did not playtest that build. The authors also
-report audio and PGXP/interpolation imperfections.
-
-Alex's existing port is a PSXRecomp standup using retail BIOS execution, a
+Alex's original port is a PSXRecomp standup using retail BIOS execution, a
 4:3 OpenGL configuration, digital input and shared launcher/setup/save surfaces.
 Its original source compiles the boot EXE, with no explicit engine/level AOT
 profile or MediEvil enhancement plugin. The original validation receipt covers
 a 25-second hidden startup, not a complete gameplay route. v0.1.3 primarily fixes
 the setup executable name; its publication does not establish gameplay quality.
-
-BlackLabel source reviewed at `6daae8f78708dd848162b7ac617991f2efb7d639`,
-RecompOne at `8d0091cf4877b27c2d526106a78c75f6b0ef97b2`.
 
 ## Reuse boundary
 
@@ -31,22 +21,21 @@ RecompOne at `8d0091cf4877b27c2d526106a78c75f6b0ef97b2`.
 | More guest RAM | Shared optional 8 MiB map | Framework; buffer relocation/capacity changes are engine-specific |
 | Offline engine/overlay compilation | Declarative AOT pipeline already exists | Title profile; reusable extraction methods in framework |
 | Draw distance, terrain, fog, ordering-table capacities | No universally safe slider | MediEvil engine plugin; common helpers where another engine can reuse them |
-| Transform-aware geometry interpolation | No RecompOne-style generic transform matcher today | Framework provenance, matching and replay, with title exceptions |
+| Transform-aware geometry interpolation | Generic transform provenance/matching/replay remains to be implemented | Framework, with title exceptions |
 | Redraw-based interpolation | Shared render-pass sandbox exists | Title supplies scene/camera/object hooks |
-| SDK HLE | Different execution strategy from the retail BIOS/PsyQ floor here | Optional future framework architecture, unnecessary for these enhancements |
+| SDK HLE | Original SDK code executes through the runtime today | Shared optional backends, qualified against the existing API contract |
 
-RecompOne's GPU interpolation tracks transform identity/provenance from GTE
-through PGXP, matches geometry across frames and interpolates rotation and
-translation before reprojection. PSXRecomp's image-blending modes do not provide
-that geometry. Its render-pass API is another reusable route but needs a game
-draw adapter. Neither should be confused with increasing gameplay simulation
-speed.
+Geometry interpolation needs transform identity/provenance from GTE through
+PGXP, geometry matching across frames, and rotation/translation interpolation
+before reprojection. The existing image-blending modes do not provide that
+geometry. The render-pass API offers another route through a game draw adapter.
+Keep gameplay simulation cadence intact when adding intermediate presentation
+frames.
 
-BlackLabel's wider terrain patch enlarges primitive/capture/ordering-table/fog
-storage and changes clipping/subdivision. These are engine changes rather than
-new terrain assets. Its unfinished LandMapPatch is not configured as an active
-patch. The several-thousand-line CullPatch cannot be generalized by replacing
-addresses alone.
+Wider and farther terrain rendering needs safe primitive/capture/ordering-table/
+fog storage, plus appropriate clipping and subdivision behavior. These changes
+belong to the MediEvil engine adapter. Shared host helpers should expose reusable
+behavior rather than embed this game's addresses or buffer layout.
 
 ## BIOS and PsyQ HLE
 
@@ -54,27 +43,17 @@ HLE means high-level emulation: host code implements a service's behavior
 instead of executing the original instructions. There are two boundaries:
 
 - BIOS HLE replaces kernel calls, such as event, file, thread or memory-card
-  services. RecompOne dispatches the A0/B0/C0 vectors to C# implementations and
-  initializes its own kernel-facing structures. It does not run OpenBIOS.
+  services, behind the existing guest-facing kernel interface.
 - PsyQ SDK HLE replaces recognized library routines linked into the game itself.
-  Its recompiler maps named functions such as CdRead, DrawOTag, VSync and
-  PadInitDirect to host SDK implementations. A verified function name/map is
-  needed; recognizing a compatible SDK routine is separate from recompiling
-  arbitrary custom game code.
+  Candidate boundaries include CdRead, DrawOTag, VSync and PadInitDirect.
+  Function identity and the applicable SDK variant must be verified before
+  installing a replacement; arbitrary custom game code stays on its existing
+  execution path.
 
-RecompOne's `SdkPatches.cs` supplies the replacement map. `LibGpu.DrawOTag`
-walks the guest ordering table and submits packets directly;
-`LibGpu.DrawSync` currently returns zero. `LibEtc.VSync` provides a presentation
-and interpolation boundary, and `LibCd` manages its own commands/read state and
-callbacks. These are useful host integration points, but the examples also show
-why matching timing, DMA completion, return values and side effects matters.
-
-This approach can reduce SDK/device work and simplify faster loading, custom
-rendering and input integration. No comparative performance benchmark was run.
-It trades the original instruction-level reference for implementation and
-compatibility work, especially for games that patch kernel internals or use
-custom SDK routines. RecompOne still retains GPU/GTE/SPU/device components; HLE
-does not mean the entire game has been rewritten as a native engine.
+HLE can reduce SDK/device work and provide useful host integration boundaries
+for loading, rendering and input. No comparative performance benchmark has been
+run for this port. Matching API behavior remains necessary for games that patch
+kernel internals, depend on asynchronous completion or use custom SDK routines.
 
 OpenBIOS is a different choice: an open-source PS1 BIOS is compiled and executed
 through PSXRecomp, preserving the game's SDK path while removing the requirement
@@ -83,12 +62,36 @@ host scheduler. Its OpenBIOS backend declines the event-call HLE tier, so those
 kernel services execute in OpenBIOS; boot-shell skipping is independently
 available. BIOS selection and SDK replacement are separate decisions.
 
-For this port, prefer bundled OpenBIOS with retail BIOS selection available,
-then consider opt-in SDK replacements only for measured bottlenecks or a needed
-enhancement boundary. Shared signature/identity checks, MIPS-to-host adapters
-and fallback infrastructure could serve other titles. API implementation should
-be qualified against the original path rather than ported wholesale solely
-because another title boots with it.
+## HLE replacement contract
+
+Owner direction: HLE may replace LLE components when it maintains a reasonable
+API contract with the existing path. Implement replacements behind the same
+guest-facing interface and retain the LLE path as a reference and fallback.
+
+The contract covers arguments, return values, errors, register preservation,
+guest-memory writes and observable device state. Preserve callback identity and
+ordering, interrupt delivery, busy/completion states, and blocking versus
+nonblocking behavior. Maintain guest scheduling and frame cadence; matching the
+original internal instruction sequence is unnecessary when observable behavior
+is preserved. Any deliberate timing enhancement needs an explicit option and
+documented behavior.
+
+For example, a host implementation of CdRead must write the expected guest
+buffer and preserve command status, error and completion/callback behavior.
+DrawSync must still report or wait for the appropriate completion state. VSync
+must honor its query/wait modes and guest cadence even if presentation runs at a
+higher refresh rate.
+
+Keep state deterministic and include backend state in save/restore or rollback
+when those services use it. Validate verified call sequences against the LLE
+reference, comparing guest-visible outputs, side effects and event ordering.
+Document tolerances for observable timing rather than assuming a host-fast
+return is compatible. Unsupported API variants or failed identity checks stay
+on LLE.
+
+Put reusable API adapters, identity checks and backend selection in PSXRecomp;
+keep MediEvil addresses and activation policy in this port. Begin with a bounded
+service and its contract instead of replacing entire subsystems at once.
 
 ## Owned USA disc and AOT
 
