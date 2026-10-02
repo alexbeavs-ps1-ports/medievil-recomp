@@ -5,8 +5,13 @@ branch's source inputs, AOT audit, Release build and headless startup results ar
 recorded in [ENHANCEMENTS.md](ENHANCEMENTS.md). Neither receipt establishes full
 gameplay quality.
 
-The enhancement branch also permits bundled OpenBIOS after intro, engine-byte
-and native-dispatch checks against the owned disc and a retail-BIOS comparison.
+The enhancement branch defaults to bundled OpenBIOS with the BIOS shell skipped.
+Its adaptive native-wide view has been checked through Dan's Crypt, including
+dialogue, player movement, 16:9/21:9/32:9 and live window resizing. Engine and
+level entries used static native dispatch. Wider capture and culling hooks
+retain the original vertical/depth tests. Audio, save/load and the remaining
+levels have not been qualified by that route. Earlier checks also compared
+intro/engine behavior against the owned disc and a retail BIOS.
 The historical retail-only requirement below does not describe this branch.
 
 ## Scope

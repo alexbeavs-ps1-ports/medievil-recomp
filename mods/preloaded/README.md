@@ -1,6 +1,8 @@
 # Preloaded mods
 
-Ship reviewed, default-disabled packages here:
+Ship reviewed packages here. MediEvil Adaptive View is enabled by default and
+offers Fit to Window, 4:3, 16:9, 21:9 and 32:9 in its View option. Fit retains a
+4:3 minimum. Other enhancements retain their own defaults.
 
 ```text
 packages/<package-id>/<version>/

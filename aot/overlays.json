@@ -6,7 +6,7 @@
   },
   "static_output": "generated/overlays_static.c",
   "strict_bounds": true,
-  "expected_records": 27,
+  "expected_records": 28,
   "bios_resident": false,
   "evidence": {
     "repository": "https://github.com/MediEvilDecompilation/medievil-decomp",
@@ -678,6 +678,60 @@
       "reference_size": 70148,
       "load_addr": "0x80010000",
       "allow_missing": true
+    },
+    {
+      "method": "fixed_address_extents",
+      "mod_package": "medievil-wide",
+      "allow_missing": true,
+      "excluded_ranges": [
+        {
+          "start": "0x800a9838",
+          "end": "0x800a9840",
+          "reason": "rodata segment in decomp config",
+          "sha256": "64ff715f9810fed4ee2769b810141d56f98285eb414a18bd29de4926bc8b7d10"
+        },
+        {
+          "start": "0x800baf78",
+          "end": "0x800baf80",
+          "reason": "rodata segment in decomp config",
+          "sha256": "2e71d2638550c15d2f0ea3e3385135f7af13e5f1953feab1dc56def4e5c66bbb"
+        },
+        {
+          "start": "0x800c532c",
+          "end": "0x800edca4",
+          "reason": "data segment in decomp config",
+          "sha256": "6208eab1979fd0ae6d8fdce8d991600182ee24a6c5e83f9fbf65aec26ded9517"
+        }
+      ],
+      "extents": [
+        {
+          "file": "MEDIEVIL.EXE",
+          "file_offset": "0x800",
+          "base": "0x80021ca4",
+          "address": "0x80021ca4",
+          "load_addr": "0x80021ca4",
+          "size": "0xcc000",
+          "sha256": "2d9adcdc3e86cbca0add1b0142bfef2d9f9ccc88b85b49b40c8016070f3425c4",
+          "entries": [
+            "0x80099a54"
+          ]
+        }
+      ]
+    }
+  ],
+  "mod_packages": [
+    {
+      "name": "medievil-wide",
+      "id": "medievil.enhancement.widescreen",
+      "version": "1.0.0",
+      "manifest": "mods/preloaded/packages/medievil.enhancement.widescreen/1.0.0/manifest.toml",
+      "manifest_sha256": "3b8d38d60e52a98ec1907b5d572be06d7c56ffe65d7b8a460267d1e87f8e5e29",
+      "features": {
+        "widescreen": {}
+      },
+      "plugins": [
+        "medievil.widescreen"
+      ]
     }
   ]
 }

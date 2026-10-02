@@ -45,6 +45,8 @@ psxrecomp_add_game_runtime(psx-runtime
 # PSX_NETPLAY=OFF. Supply the declarations without enabling netplay.
 target_include_directories(psx-runtime PRIVATE
     "${PSXRECOMP_ROOT}/lib/recomp-net/include")
+target_sources(psx-runtime PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_widescreen.c")
 
 # Stage runtime configs next to the exe for direct build/ launches. Only copy
 # files that exist — never fail POST_BUILD when game_options.toml is absent.

@@ -219,17 +219,64 @@ OpenBIOS and confirmed the same BIOS/backend/boot mode in its startup log.
 Its visible game window was responsive and presented advancing frames. Full
 gameplay, audio and save/load qualification remain pending.
 
-## Adaptive widescreen implementation direction
+## Adaptive native-wide view (2026-10-02)
 
-Use Tomba's custom native-wide renderer and adaptive aspect APIs as requested.
-Tomba's current fit mode has a 4:3 floor, so support for narrower portrait ratios
-would require additional renderer/aspect policy work. Wider arbitrary window
-ratios need validation beyond the familiar 16:9/21:9/32:9 examples.
+The preloaded MediEvil Adaptive View package now defaults to Fit to Window.
+It uses the shared native-wide renderer used by Tomba, with MediEvil-specific
+capture and culling hooks. Its View option also offers 4:3, 16:9, 21:9 and 32:9.
+Fit follows wider window ratios continuously and retains the renderer's 4:3
+minimum. Movies retain their authored aspect. HUD and dialogue retain their
+original scale and remain within the central frame; separate edge anchoring
+is not enabled.
 
-MediEvil must supply its own projection/culling sites, world-versus-HUD primitive
-classification, backdrop handling and safe terrain/primitive capacity changes.
-Do not transplant Tomba's guest addresses or advertise a working widescreen
-toggle before those hooks are verified in the main engine and level overlays.
-Start with visible boot and level-transition parity, then PGXP comparisons,
-adaptive widescreen and terrain capacity checks. Treat transform interpolation
-as its own shared framework project after those foundations are established.
+The framework pin is local commit `c29e93430814288f05b05224bb232b923daf586a`
+on `feat/guarded-packed-wide-cull`, extending the latest checked upstream master
+`641537be8210f96f61a8ad69d6021844b56e30e1`. The shared addition supports
+full-instruction-guarded packed-coordinate reject predicates, including native
+code, cached-module callback ABI 26 and dirty-RAM interpretation. Expected
+instructions and masks enter cache identity. At 4:3 the predicate is the
+original reject; wide views preserve vertical flags and defer horizontal
+clipping to the renderer. The local framework commit must be made available
+to downstream checkouts before distributing this source branch.
+
+The title supplies five guarded main-engine polygon-reject sites, a separate
+TL overlay reject with an instruction unique across the owned overlays, and
+widens the existing
+object-box horizontal bounds while retaining vertical, depth and backface
+tests. The live 3D viewport stores 512 pixels in scratchpad; its capture-plane
+SVECs independently use a 320-unit span. The adapter converts the live margin
+between those scales, including a 32-pixel culling guard.
+
+Ten instruction-guarded disc patches relocate the original 100-entry marked
+cell list into expanded RAM. The capture routine retains its own bounded count
+check with a 1024-entry limit. Its 8-byte records and marked-cell pointers have
+separate arenas, the polygon bookkeeping has 8192 slots, and two primitive
+buffers each have 1 MiB with end slack. The original heap allocation and teardown
+remain game-owned. Fog, view distance, subdivision and object activation remain
+stock. The adapter changes no overlay compression or loader format.
+
+The modified main engine is a separately byte-verified AOT producer, alongside
+the original engine and 26 raw level overlays. Generate audited 28 recipes and
+49253 guarded static variants. The extractor uses the owned original disc and
+the exact selected package view; it needs no runtime captures. This inventory
+does not prove exhaustive static coverage.
+
+Visual testing caught a mesh-tearing error from the generic HUD corner
+heuristic moving world polygons. It is disabled for this title. The corrected
+OpenBIOS/OpenGL diagnostic build reached Dan's Crypt (CR overlay), displayed
+the gargoyle dialogue and controllable character, and rendered additional room
+geometry at 16:9, 21:9 and 32:9 without those tears. At a live 1260x600 resize,
+Fit produced an 806x240 native surface from the 512x240 source; a narrower
+900x700 window returned to the 4:3 floor. Capture corners and render arenas
+updated during those transitions. Sampled unused bytes after the capture and
+polygon lists remained zero. These samples are bounded route evidence, not
+proof against overflow in every level.
+
+Windows Release and diagnostic builds passed. Code-generation, real interpreter
+and cached callback tests passed; 53 original-disc AOT method tests passed.
+The standalone interpreter harness was built with GCC because its existing
+Clang/LTO build retains unrelated GPU dependencies and fails to link. Screenshots
+and live receipts remain private in ignored analysis/. Outdoor/boss overlays,
+ratios beyond the tested cases, audio and save/load still need qualification.
+The TL site was verified from original disc instructions; that level was not
+included in the live route.

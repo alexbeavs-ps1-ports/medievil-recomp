@@ -14,6 +14,13 @@ Static recompilation of **MediEvil** built on
 
 MediEvil recompiled for modern systems using psxrecomp.
 
+On the enhancement branch, **MediEvil Adaptive View** defaults to **Fit to
+Window**. Change its View option in the launcher's Mods settings for 4:3,
+16:9, 21:9 or 32:9. Fit follows wider window shapes with a 4:3 minimum;
+movies keep their original proportions. The branch uses bundled OpenBIOS
+with the BIOS shell skipped. See [enhancement validation](docs/ENHANCEMENTS.md)
+for the tested route and remaining qualification work.
+
 | | |
 |---|---|
 | Players | 1 |
