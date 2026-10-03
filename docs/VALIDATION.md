@@ -16,6 +16,11 @@ subdivision bypass defaults on. Both selections have separately verified native
 AOT images. Smooth Presentation defaults on at Display refresh, with fixed
 60/120/144/240/360 choices and original simulation timing. PGXP now belongs to
 a default-on mod whose session choice survives renderer initialization.
+The final default-state Crypt route showed the room beyond the closed gate
+from the coffin and gate-side views, with no cells shed by the capture budget.
+The gate was not crossed in that route. Display requested 165 Hz and achieved
+about 132 presents/sec; steady target throughput remains unqualified. See the
+enhancement receipt for the measured timing and option states.
 Saturation-aware terrain winding
 and conservative tall-wall capture fill the previously observed Crypt gaps.
 Audio, save/load and the remaining

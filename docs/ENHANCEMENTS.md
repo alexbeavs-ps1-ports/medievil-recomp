@@ -426,3 +426,49 @@ in 31 generated files. Capture metadata at expanded guest RAM `0x80308C20`
 records candidate cells, captured cells, raw polygon references and cells shed
 by the budget, allowing room pop-in to be distinguished from budget exhaustion.
 The owner narrowed the visibility report to the starting Crypt/intro area.
+
+### Final default-state Crypt check
+
+The final Windows diagnostic build was restarted with the default mod plan:
+PGXP geometry/perspective correction and CPU tracking on, 3x terrain distance,
+subdivision bypass on, Fit view and Display presentation. Both subdivision
+instructions read back as `0x290A0000`; neither required runtime code writes.
+The 1080p preset produced 1200 internal lines from the 240-line reference.
+
+At a 2048x490 client area, captures from near the coffin, at the closed gate
+and after moving left showed the surrounding walls and ceiling and the room
+beyond the gate. That room was visible before approaching the gate. Capture
+metadata reported 105 candidates, 105 captured cells, 3814 raw polygon
+references and zero cells shed by the budget. This qualifies the sampled
+starting-room views; it does not prove all hallway transitions or every frame
+of the reported wall deformation. The closed gate was not crossed in this
+final route. Later levels and extreme-aspect title/sky boundaries remain open.
+
+PGXP enabled/disabled session checks confirmed that the mod owns geometry and
+perspective correction, including CPU propagation when enabled, and that
+renderer initialization preserves its selection. Windows Release and
+diagnostic builds and the terrain contract check passed. Both native
+subdivision selections passed owned-disc byte guards and the AOT audit.
+
+Presentation throughput is not yet locked to every requested rate. A 10.047 s
+all-default Crypt sample requested the measured 165 Hz display refresh and
+delivered about 132.38 presents/sec with 59.72 guest VBlanks/sec. An earlier
+360-target sample, with subdivision bypass off and CPU propagation off,
+delivered about 238.98 presents/sec with 59.02 guest VBlanks/sec. These are
+different option states, not a controlled performance comparison. Guest
+VBlanks are not new game images: the observed source-image cadence was lower.
+The production scheduler passes the requested rate choices, but live render
+and emulation work can miss presentation deadlines. Stable high-refresh
+throughput still needs shared-framework qualification and optimization.
+
+The game changes are published as ordered PRs
+[1](https://github.com/alexbeavs-ps1-ports/medievil-recomp/pull/1),
+[2](https://github.com/alexbeavs-ps1-ports/medievil-recomp/pull/2),
+[3](https://github.com/alexbeavs-ps1-ports/medievil-recomp/pull/3) and
+[4](https://github.com/alexbeavs-ps1-ports/medievil-recomp/pull/4).
+Shared prerequisites are framework PRs
+[483](https://github.com/RetroPortingToolKit/psxrecomp/pull/483) and
+[484](https://github.com/RetroPortingToolKit/psxrecomp/pull/484).
+The published framework pins were fetched from the canonical remote into a
+fresh bare repository. Disc assets, generated retail code, captures and
+personal controller edits are excluded from the PRs.

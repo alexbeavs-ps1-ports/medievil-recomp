@@ -22,7 +22,9 @@ with the BIOS shell skipped. Visual defaults include the 1080p internal
 resolution preset, PGXP geometry correction and perspective textures. Adaptive
 View also offers Original, 2x and 3x (default) terrain distance, with terrain
 subdivision bypass enabled by default. Smooth Presentation follows the display
-refresh by default, with 60/120/144/240/360 FPS choices. See [enhancement validation](docs/ENHANCEMENTS.md)
+refresh by default, with 60/120/144/240/360 FPS choices. These are presentation
+targets using temporal image blending; the game retains its original timing.
+Live throughput can fall below the selected rate. See [enhancement validation](docs/ENHANCEMENTS.md)
 for the tested route and remaining qualification work.
 
 | | |
