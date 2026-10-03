@@ -25,6 +25,7 @@ set(PSX_SETUP_WIZARD ON CACHE BOOL
 include("${PSXRECOMP_ROOT}/runtime/runtime.cmake")
 
 psxrecomp_add_game_runtime(psx-runtime
+    PGXP
     # ENABLE_NETPLAY_IF_PRESENT
     # NETPLAY_LOBBY_URL "ws://netplay.retcomm.net:8765"
     ENABLE_SETUP_WIZARD
@@ -33,10 +34,31 @@ psxrecomp_add_game_runtime(psx-runtime
     MAX_PLAYERS 1
     # LAUNCHER_BOXART "${CMAKE_CURRENT_SOURCE_DIR}/launcher_assets/img/boxart.tga"
     APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/assets/psxrecomp.ico"
+    GAME_OVERLAY_STATIC_C "${CMAKE_CURRENT_SOURCE_DIR}/generated/overlays_static.c"
     GEN_MARKER "generated/SCUS_942.27_dispatch.c"
     GEN_FULL_GLOB "generated/SCUS_942.27_full_*.c"
+    PRELOADED_MODS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mods/preloaded"
     CODEGEN_SETUP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/codegen_setup.c"
 )
+
+# The pinned runtime uses RNetHostRelayStatus in its launcher even with
+# PSX_NETPLAY=OFF. Supply the declarations without enabling netplay.
+target_include_directories(psx-runtime PRIVATE
+    "${PSXRECOMP_ROOT}/lib/recomp-net/include")
+target_sources(psx-runtime PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_widescreen.c")
+
+option(MEDIEVIL_BUILD_TESTS "Build MediEvil terrain contract checks" OFF)
+if(MEDIEVIL_BUILD_TESTS)
+    enable_testing()
+    add_executable(medievil_terrain_test tests/test_terrain_enhancements.c)
+    target_include_directories(medievil_terrain_test PRIVATE
+        "${PSXRECOMP_ROOT}/runtime/include")
+    if(NOT WIN32)
+        target_link_libraries(medievil_terrain_test PRIVATE m)
+    endif()
+    add_test(NAME medievil_terrain_contracts COMMAND medievil_terrain_test)
+endif()
 
 # Stage runtime configs next to the exe for direct build/ launches. Only copy
 # files that exist — never fail POST_BUILD when game_options.toml is absent.
