@@ -390,3 +390,9 @@ distance was 12288, and the viewport used reach 16384/shift 2. Default 2x used
 sampled route. The subdivision option retained the near rejection and the live
 test did not establish universal near-camera quality. Private mod state was
 restored after the test; the player build retains the default-off setting.
+
+The final title-menu capture reveals additional scenery on the right but still
+contains black background regions at extreme Fit ratios. Whether those are
+authored scene boundaries or additional sky/model rejection paths is not yet
+established. This remaining coverage is tracked under `beads-eio.18.5`; the
+current fixes do not establish complete title/outdoor boundary coverage.
