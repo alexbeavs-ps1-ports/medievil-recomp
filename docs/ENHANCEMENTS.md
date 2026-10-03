@@ -286,8 +286,8 @@ included in the live route.
 The horizontal projection correction first landed in local commit
 `3787120488cf343bb167b87b18e5b614aa752256`, extending the same upstream
 `641537be8210f96f61a8ad69d6021844b56e30e1` baseline. It remains on
-`feat/guarded-packed-wide-cull` and must be published before clean downstream
-checkouts can resolve this source branch's gitlink.
+`feat/guarded-packed-wide-cull`. Its ancestry is published through framework
+[PR #483](https://github.com/RetroPortingToolKit/psxrecomp/pull/483).
 
 A Crypt diagnostic captured a terrain GT4 with vertices (882,117), (988,130),
 (1023,152), (1023,173). Its two triangle signed areas were +1877 and -735:
@@ -310,21 +310,24 @@ match every part of the owner's reported left-wall deformation.
 
 ## Visual defaults and extended terrain (2026-10-02)
 
-The current framework pin is `a95d8c77ee57d5aee84cc46142a0ac6f86d52cd7`,
-merging upstream master `973d93a90761c8ef986ce9af63965d96a3613ed3` with
-the native-wide fixes on `feat/guarded-packed-wide-cull`. These local framework
-commits must be published before a clean downstream checkout can resolve the
-gitlink. The current dependency gitlinks resolve locally; a recursive fetch
+The current framework pin is `46af572902210d94e46305355ad22649c6b0bd3f`,
+extending the native-wide integration merge `a95d8c77ee57d5aee84cc46142a0ac6f86d52cd7`
+of upstream master `973d93a90761c8ef986ce9af63965d96a3613ed3`. Framework
+[PR #483](https://github.com/RetroPortingToolKit/psxrecomp/pull/483) publishes the
+rendering fixes; [PR #484](https://github.com/RetroPortingToolKit/psxrecomp/pull/484)
+adds the PGXP session-ownership fix. The pins are available on the canonical
+remote. The current dependency gitlinks resolve locally; a recursive fetch
 encountered an unavailable historical netplay revision, so upstream was fetched
 without recursing into its historical submodules.
 
 | Setting | Default | Behavior |
 | --- | --- | --- |
 | Internal resolution | 1080p preset | Integer 5x scale from the 240-line reference, producing 1200 internal lines |
-| PGXP | On | Geometry correction, perspective textures and CPU provenance; tolerance 1.0 |
+| PGXP mod | On | Shared plugin behind a title default-on manifest; geometry, perspective textures and CPU provenance, tolerance 1.0 |
 | Adaptive view | Fit | Reveals more world at the window ratio, with a 4:3 minimum |
-| Terrain distance | 2x | Mod option also offers Original and 3x |
-| Terrain subdivision bypass | Off | Experimental option bypasses two guarded depth thresholds |
+| Terrain distance | 3x | Mod option also offers Original and 2x |
+| Terrain subdivision bypass | On | Conditional guarded disc patches; both selections compiled ahead of time |
+| Smooth Presentation mod | Display | Shared motion-adaptive blending, with 60/120/144/240/360 presentation targets |
 
 The terrain adapter uses verified USA function boundaries and retains the guest
 capture-record, marked-cell cleanup and primitive-list contracts. It replaces
@@ -347,12 +350,13 @@ Distance is bounded by the exclusive table/fog ceiling: the observed title
 distance changes from 5632 to 11264, and Crypt from 4096 to 8191 at 2x.
 
 The subdivision option changes only instruction-verified thresholds at
-`0x80022108` and `0x8002279C`, using executable-RAM invalidation so AOT and
-fallback both observe the change. The original OTZ >= 4 near rejection remains.
-The option is experimental because removing subdivision can reduce geometry
-quality near the camera. Executable invalidation can also move affected code
-through fallback dispatch; no comparative performance benchmark is claimed.
-It defaults off.
+`0x80022108` and `0x8002279C`. Conditional declarative disc patches select it;
+both patched engine images receive separate byte-verified AOT producers, so
+selection does not invalidate executable RAM or move the terrain funnel into
+fallback. The original OTZ >= 4 near rejection remains. The original renderer
+can be selected by turning the option off; near-camera quality and remaining
+level coverage still require qualification. Bypass now defaults on to match
+the owner's visual-quality preference.
 
 The shared renderer now also supplies full-instruction-guarded native-wide
 NCLIP branch predicates for three terrain winding consumers. Saturated X can
@@ -366,7 +370,7 @@ changed branch decisions rather than rendered primitives.
 
 Windows Release and diagnostic builds pass. The terrain contract test exercises
 fog ownership/restoration, noncompounding distance, tall-wall capture, duplicate
-cell IDs, dense-grid budgets and guarded subdivision writes. Shared real-GTE,
+cell IDs, dense-grid budgets and absence of runtime executable mutation. Shared real-GTE,
 interpreter, codegen and cached-callback tests pass, together with the 53-method
 AOT suite and the new upstream ChangeThread-self and TCC include checks.
 Live visual qualification is recorded below. Full visual parity is not claimed;
@@ -389,10 +393,36 @@ distance was 12288, and the viewport used reach 16384/shift 2. Default 2x used
 8191 and reach 8192/shift 1. Render records stayed within their arenas in the
 sampled route. The subdivision option retained the near rejection and the live
 test did not establish universal near-camera quality. Private mod state was
-restored after the test; the player build retains the default-off setting.
+restored after the test. This was the earlier runtime-patch implementation;
+the current default-on option uses independently compiled native images.
 
 The final title-menu capture reveals additional scenery on the right but still
 contains black background regions at extreme Fit ratios. Whether those are
 authored scene boundaries or additional sky/model rejection paths is not yet
 established. This remaining coverage is tracked under `beads-eio.18.5`; the
 current fixes do not establish complete title/outdoor boundary coverage.
+
+## Default-on mods and presentation cadence
+
+PGXP activation previously set live flags before renderer initialization,
+which then silently overwrote them with the base video configuration. The
+shared session-owned precision API fixes that ordering and resets the override
+before the next session's plan. The game keeps base geometry/texturing off and
+ships a default-on override of the shared PGXP manifest; disabling the mod
+therefore restores the base path. Previously task-added local video overrides
+were removed without changing the player's other preferences.
+
+Smooth Presentation uses the shared OpenGL motion-adaptive temporal blend and
+the FLIP source: a 30 Hz game image can span two original guest VBlanks. Display
+passes the zero sentinel to follow measured monitor refresh. Fixed 60, 120,
+144, 240 and 360 choices select presentation targets. Gameplay, timers, input,
+CD and audio keep their original cadence. This combines completed images;
+it does not implement transform interpolation or motion-vector generation.
+Large visual changes switch more cleanly, but temporal blending can soften
+moving edges and retains a source-image delay. FMVs suspend blending.
+
+The owned-disc audit now validates 29 images/recipes and 49330 guarded variants
+in 31 generated files. Capture metadata at expanded guest RAM `0x80308C20`
+records candidate cells, captured cells, raw polygon references and cells shed
+by the budget, allowing room pop-in to be distinguished from budget exhaustion.
+The owner narrowed the visibility report to the starting Crypt/intro area.

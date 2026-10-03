@@ -6,7 +6,7 @@
   },
   "static_output": "generated/overlays_static.c",
   "strict_bounds": true,
-  "expected_records": 28,
+  "expected_records": 29,
   "bios_resident": false,
   "evidence": {
     "repository": "https://github.com/MediEvilDecompilation/medievil-decomp",
@@ -717,6 +717,45 @@
           ]
         }
       ]
+    },
+    {
+      "method": "fixed_address_extents",
+      "mod_package": "medievil-wide-subdivision-bypass",
+      "allow_missing": true,
+      "excluded_ranges": [
+        {
+          "start": "0x800a9838",
+          "end": "0x800a9840",
+          "reason": "rodata segment in decomp config",
+          "sha256": "64ff715f9810fed4ee2769b810141d56f98285eb414a18bd29de4926bc8b7d10"
+        },
+        {
+          "start": "0x800baf78",
+          "end": "0x800baf80",
+          "reason": "rodata segment in decomp config",
+          "sha256": "2e71d2638550c15d2f0ea3e3385135f7af13e5f1953feab1dc56def4e5c66bbb"
+        },
+        {
+          "start": "0x800c532c",
+          "end": "0x800edca4",
+          "reason": "data segment in decomp config",
+          "sha256": "6208eab1979fd0ae6d8fdce8d991600182ee24a6c5e83f9fbf65aec26ded9517"
+        }
+      ],
+      "extents": [
+        {
+          "file": "MEDIEVIL.EXE",
+          "file_offset": "0x800",
+          "base": "0x80021ca4",
+          "address": "0x80021ca4",
+          "load_addr": "0x80021ca4",
+          "size": "0xcc000",
+          "sha256": "210a648018a3c04ffb2ff70f8fe1a7ea1832b3494d9921b7d45bdd6852498ca4",
+          "entries": [
+            "0x80099a54"
+          ]
+        }
+      ]
     }
   ],
   "mod_packages": [
@@ -725,9 +764,26 @@
       "id": "medievil.enhancement.widescreen",
       "version": "1.0.0",
       "manifest": "mods/preloaded/packages/medievil.enhancement.widescreen/1.0.0/manifest.toml",
-      "manifest_sha256": "1c9e211b641f508f33f981e6e83db599efdc685951f6b0bc97a03d000970fde7",
+      "manifest_sha256": "28340fe26df8431d09427dbbc899bfe6d7e703e455f8663c6727f0803f306d7b",
       "features": {
-        "widescreen": {}
+        "widescreen": {
+          "subdivision_bypass": false
+        }
+      },
+      "plugins": [
+        "medievil.widescreen"
+      ]
+    },
+    {
+      "name": "medievil-wide-subdivision-bypass",
+      "id": "medievil.enhancement.widescreen",
+      "version": "1.0.0",
+      "manifest": "mods/preloaded/packages/medievil.enhancement.widescreen/1.0.0/manifest.toml",
+      "manifest_sha256": "28340fe26df8431d09427dbbc899bfe6d7e703e455f8663c6727f0803f306d7b",
+      "features": {
+        "widescreen": {
+          "subdivision_bypass": true
+        }
       },
       "plugins": [
         "medievil.widescreen"

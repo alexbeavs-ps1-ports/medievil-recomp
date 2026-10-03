@@ -11,8 +11,12 @@ dialogue, player movement, 16:9/21:9/32:9 and live window resizing. Engine and
 level entries used static native dispatch. Wider capture and culling hooks
 retain the original vertical/depth tests. The latest build uses the 1080p
 preset, PGXP geometry/perspective correction and CPU provenance by default.
-Terrain distance defaults to 2x; Original and 3x are selectable, and an
-experimental subdivision bypass defaults off. Saturation-aware terrain winding
+Terrain distance defaults to 3x; Original and 2x are selectable, and
+subdivision bypass defaults on. Both selections have separately verified native
+AOT images. Smooth Presentation defaults on at Display refresh, with fixed
+60/120/144/240/360 choices and original simulation timing. PGXP now belongs to
+a default-on mod whose session choice survives renderer initialization.
+Saturation-aware terrain winding
 and conservative tall-wall capture fill the previously observed Crypt gaps.
 Audio, save/load and the remaining
 levels have not been qualified by that route. Earlier checks also compared

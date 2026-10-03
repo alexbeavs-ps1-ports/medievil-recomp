@@ -20,8 +20,9 @@ Window**. Change its View option in the launcher's Mods settings for 4:3,
 movies keep their original proportions. The branch uses bundled OpenBIOS
 with the BIOS shell skipped. Visual defaults include the 1080p internal
 resolution preset, PGXP geometry correction and perspective textures. Adaptive
-View also offers Original, 2x (default) and 3x terrain distance, plus a default-off
-experimental terrain subdivision bypass. See [enhancement validation](docs/ENHANCEMENTS.md)
+View also offers Original, 2x and 3x (default) terrain distance, with terrain
+subdivision bypass enabled by default. Smooth Presentation follows the display
+refresh by default, with 60/120/144/240/360 FPS choices. See [enhancement validation](docs/ENHANCEMENTS.md)
 for the tested route and remaining qualification work.
 
 | | |
@@ -193,3 +194,32 @@ Windows Release/diagnostic builds and contract tests pass. Live Crypt testing
 fills missing walls and ceiling, including the room beyond the gate. Both 2x
 and 3x distance and the subdivision option have been exercised. Extreme-aspect
 title-scene black regions and other levels remain qualification work.
+
+## Enhancement: default-on visual mods and display-rate presentation
+
+| Control | Default | Where to change it |
+| --- | --- | --- |
+| Adaptive world view | Fit to Window | Mods: MediEvil Adaptive View |
+| Terrain distance | 3x | Adaptive View: Original / 2x / 3x |
+| Terrain subdivision bypass | On | Adaptive View: Bypass terrain subdivision |
+| PGXP geometry and perspective textures | On, CPU propagation on | Mods: MediEvil PGXP Precision |
+| Smooth Presentation | Display | Mods: Display / 60 / 120 / 144 / 240 / 360 FPS |
+| Internal resolution | 1080p preset | Display settings; integer 5x at the 240-line reference |
+
+Smooth Presentation reuses the shared OpenGL motion-adaptive frame blending
+path. It follows real game frame flips so a game frame can span multiple
+VBlanks. Gameplay, input, timers and audio keep their original speed. It blends
+completed images rather than generating new geometry or motion vectors; moving
+edges can soften and presentation includes a source-frame delay. Display follows
+the measured monitor refresh, while the fixed choices set presentation targets.
+
+Both terrain subdivision selections are compiled ahead of time from separately
+verified patched engine images. Selecting bypass no longer invalidates engine
+code at startup. PGXP uses the shared plugin behind a title default-on manifest;
+turning the mod off restores the base correction settings on the next launch.
+Changes to Mods take effect when the game starts again.
+
+These defaults target visual quality while retaining the game's simulation
+cadence. Starting-room/hallway visibility, frame pacing and PGXP mod ownership
+are validated in the enhancement receipt; remaining title/outdoor boundary
+coverage and full-game save/audio checks are still documented there.

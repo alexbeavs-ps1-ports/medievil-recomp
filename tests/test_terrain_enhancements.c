@@ -1,5 +1,5 @@
 /* Engine-contract fixture: real USA record layouts, bounded enhanced arenas,
- * original cleanup sentinel, fog lifetime and executable-RAM invalidation. */
+ * original cleanup sentinel, fog lifetime and no runtime executable mutation. */
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
@@ -105,7 +105,7 @@ int main(void) {
     psx_mod_write_word(0x80021CEC, 0x27BDFF50);
     psx_mod_write_word(0x80022108, 0x290A1000); psx_mod_write_word(0x8002279C, 0x12345678);
     code_writes=0; bypass_subdivision=1; render(&cpu, 0x80021CEC);
-    assert(code_writes==1 && psx_mod_read_word(0x80022108)==0x290A0000);
+    assert(code_writes==0 && psx_mod_read_word(0x80022108)==0x290A1000);
     assert(psx_mod_read_word(0x8002279C)==0x12345678);
     assert(fog_free(&cpu, 0x8007A0C0)); assert(psx_mod_read_word(FOG)==0);
     assert(psx_mod_read_half(0x8011006E)==8192 && psx_mod_read_half(0x8011006C)==4);

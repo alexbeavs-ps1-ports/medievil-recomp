@@ -28,6 +28,10 @@ RELOCATIONS = {
     0x80052094: (0x3C03800F, 0x3C038030),
     0x80052098: (0x2463EA24, 0x24630000),
 }
+SUBDIVISIONS = {
+    0x80022108: (0x290A1000, 0x290A0000),
+    0x8002279C: (0x290A1000, 0x290A0000),
+}
 
 # Function boundaries and the optional subdivision thresholds are verified
 # against the owned executable, independently of any generated C output.
@@ -123,7 +127,7 @@ feature = "widescreen"
 id = "draw_distance"
 label = "Draw distance"
 type = "choice"
-default = "2x"
+default = "3x"
 
 [[option.choice]]
 value = "1x"
@@ -140,16 +144,17 @@ label = "Extended (3x)"
 [[option]]
 feature = "widescreen"
 id = "subdivision_bypass"
-label = "Bypass terrain subdivision (experimental)"
+label = "Bypass terrain subdivision"
 type = "boolean"
-default = false
+default = "true"
 '''
     lba, _ = disc.files['MEDIEVIL.EXE']
-    for address, (expected, replacement) in RELOCATIONS.items():
+    for address, (expected, replacement) in {**RELOCATIONS, **SUBDIVISIONS}.items():
         file_offset = 0x800 + address - base
         actual = struct.unpack_from('<I', data, file_offset)[0]
         if actual != expected:
             raise ValueError(f'Capture relocation guard failed at {address:#x}: {actual:#x}')
+        condition = 'when = { subdivision_bypass = "true" }\n' if address in SUBDIVISIONS else ''
         text += f'''
 # Capture-list reference at {address:#010x}.
 [[patch]]
@@ -158,36 +163,41 @@ target = "disc_user"
 offset = {lba * 2048 + file_offset}
 expected = "{struct.pack('<I',expected).hex(' ')}"
 replace = "{struct.pack('<I',replacement).hex(' ')}"
-'''
+{condition}'''
     manifest.parent.mkdir(parents=True, exist_ok=True)
     manifest.write_text(text, encoding='utf-8', newline='\n')
     original = next(image for image in profile['images'] if image['files'] == ['MEDIEVIL.EXE'] and 'mod_package' not in image)
-    patched = bytearray(data[0x800:])
-    for address, (_, replacement) in RELOCATIONS.items():
-        struct.pack_into('<I', patched, address - base, replacement)
-    # The extractor sees the original disc. Declare the patched EXE body as
-    # a verified extent so it receives an independent native producer.
-    modified = {
-        'method': 'fixed_address_extents', 'mod_package': 'medievil-wide',
-        'allow_missing': True,
-        'excluded_ranges': copy.deepcopy(original['excluded_ranges']),
-        'extents': [{
-            'file': 'MEDIEVIL.EXE', 'file_offset': '0x800',
-            'base': hex(base), 'address': hex(base), 'load_addr': hex(base),
-            'size': hex(len(patched)), 'sha256': hashlib.sha256(patched).hexdigest(),
-            'entries': [hex(struct.unpack_from('<I', data, 0x10)[0])],
-        }],
-    }
-    profile['images'] = [image for image in profile['images'] if image.get('mod_package') != 'medievil-wide'] + [modified]
-    profile['mod_packages'] = [{
-        'name': 'medievil-wide', 'id': 'medievil.enhancement.widescreen', 'version': '1.0.0',
-        'manifest': manifest.relative_to(ROOT).as_posix(),
-        'manifest_sha256': hashlib.sha256(text.encode()).hexdigest(),
-        'features': {'widescreen': {}}, 'plugins': ['medievil.widescreen'],
-    }]
-    profile['expected_records'] = 28
+    names = ('medievil-wide', 'medievil-wide-subdivision-bypass')
+    profile['images'] = [image for image in profile['images'] if image.get('mod_package') not in names]
+    profile['mod_packages'] = []
+    # Compile both selections. Changing a visual option must not dirty the
+    # engine and drop its entire terrain funnel into interpreted execution.
+    for bypass, name in enumerate(names):
+        patched = bytearray(data[0x800:])
+        patches = {**RELOCATIONS, **(SUBDIVISIONS if bypass else {})}
+        for address, (_, replacement) in patches.items():
+            struct.pack_into('<I', patched, address - base, replacement)
+        profile['images'].append({
+            'method': 'fixed_address_extents', 'mod_package': name,
+            'allow_missing': True,
+            'excluded_ranges': copy.deepcopy(original['excluded_ranges']),
+            'extents': [{
+                'file': 'MEDIEVIL.EXE', 'file_offset': '0x800',
+                'base': hex(base), 'address': hex(base), 'load_addr': hex(base),
+                'size': hex(len(patched)), 'sha256': hashlib.sha256(patched).hexdigest(),
+                'entries': [hex(struct.unpack_from('<I', data, 0x10)[0])],
+            }],
+        })
+        profile['mod_packages'].append({
+            'name': name, 'id': 'medievil.enhancement.widescreen', 'version': '1.0.0',
+            'manifest': manifest.relative_to(ROOT).as_posix(),
+            'manifest_sha256': hashlib.sha256(text.encode()).hexdigest(),
+            'features': {'widescreen': {'subdivision_bypass': bool(bypass)}},
+            'plugins': ['medievil.widescreen'],
+        })
+    profile['expected_records'] = 29
     profile_path.write_text(json.dumps(profile, indent=2)+'\n', newline='\r\n')
-    print('Verified capture, fog, distance, subdivision and TL instruction guards; added patched native AOT producer')
+    print('Verified engine guards; added native AOT producers for both subdivision selections')
 
 if __name__ == '__main__':
     main()

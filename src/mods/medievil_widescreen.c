@@ -21,7 +21,7 @@ enum {
     TERRAIN = 0x800EEDC0u, CORNERS = 0x800EEA04u
 };
 
-static unsigned distance_scale = 2, bypass_subdivision;
+static unsigned distance_scale = 3, bypass_subdivision = 1;
 
 static int ram(uint32_t p, uint32_t bytes) {
     return p >= 0x80010000u && p < 0x80200000u &&
@@ -188,12 +188,12 @@ static int capture(CPUState* cpu, uint32_t address) {
         cells[found++] = (Cell){cell, d2};
     }
     qsort(cells, found, sizeof cells[0], nearer);
-    unsigned captured = 0, spent = 0;
+    unsigned captured = 0, spent = 0, budget_skipped = 0;
     for (unsigned i = 0; i < found && captured < CAPTURE_CAP; ++i) {
         uint32_t cell = cells[i].address;
         unsigned count = psx_mod_read_half(cell);
         if (count & 0x8000) continue; /* multiple grid squares can share a cell */
-        if (spent + count > PRIM_CAP) continue;
+        if (spent + count > PRIM_CAP) { ++budget_skipped; continue; }
         uint32_t entry = CAPTURE_LIST + captured * 8;
         psx_mod_write_word(entry, count); /* clears record padding as well */
         psx_mod_write_word(entry + 4, psx_mod_read_word(cell + 4));
@@ -203,6 +203,10 @@ static int capture(CPUState* cpu, uint32_t address) {
         ++captured;
     }
     psx_mod_write_word(CELL_LIST + captured * 4, 0); /* guest cleanup sentinel */
+    psx_mod_write_word(META + 32, found);
+    psx_mod_write_word(META + 36, captured);
+    psx_mod_write_word(META + 40, spent);
+    psx_mod_write_word(META + 44, budget_skipped);
     cpu->gpr[2] = captured;
     return 1;
 }
@@ -211,18 +215,13 @@ static void render(CPUState* cpu, uint32_t address) {
     (void)cpu;
     if (psx_mod_read_word(address) != 0x27BDFF50u) return;
     configure_arenas();
-    if (bypass_subdivision) {
-        /* Replace only the two subdivision depth thresholds. Use executable
-         * RAM invalidation so both AOT and fallback honor the selected option.
-         * The existing OTZ>=4 near rejection remains in place. */
-        const uint32_t sites[] = {0x80022108u, 0x8002279Cu};
-        for (unsigned i = 0; i < 2; ++i)
-            if (psx_mod_read_word(sites[i]) == 0x290A1000u)
-                psx_mod_write_code_word(sites[i], 0x290A0000u);
-    }
+    /* Subdivision is selected by guarded disc patches and independently
+     * compiled AOT images. Never invalidate executable RAM every launch. */
 }
 
 static void activate(void) {
+    distance_scale = 3;
+    bypass_subdivision = 1;
     char view[16];
     if (!psx_mod_set_main_ram_8mb(1)) {
         fprintf(stderr, "MediEvil: expanded render memory unavailable\n");
@@ -235,7 +234,7 @@ static void activate(void) {
     char value[16];
     if (psx_mod_option_value(PKG, "widescreen", "draw_distance", value, sizeof value)) {
         if (!strcmp(value, "1x")) distance_scale = 1;
-        else if (!strcmp(value, "3x")) distance_scale = 3;
+        else if (!strcmp(value, "2x")) distance_scale = 2;
     }
     if (psx_mod_option_value(PKG, "widescreen", "subdivision_bypass", value, sizeof value))
         bypass_subdivision = !strcmp(value, "true");

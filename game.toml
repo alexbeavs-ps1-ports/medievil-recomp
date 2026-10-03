@@ -52,8 +52,9 @@ renderer = "opengl"
 aspect_ratio = "4:3"
 internal_resolution = "1080p"
 resolution_reference_lines = 240
-geometry_correction = true
-perspective_texturing = true
+# The default-on PGXP mod owns these toggles; disabling it restores stock math.
+geometry_correction = false
+perspective_texturing = false
 pgxp_cpu_mode = true
 pgxp_tolerance = 1.0
 
