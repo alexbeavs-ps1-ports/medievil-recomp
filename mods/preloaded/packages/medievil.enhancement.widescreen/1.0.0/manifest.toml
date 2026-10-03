@@ -4,7 +4,7 @@ version = "1.0.0"
 name = "MediEvil Adaptive View"
 author = "MediEvil Recompiled"
 license = "GPL-3.0-only"
-description = "Native-wide rendering with expanded terrain capture and polygon buffers."
+description = "Adaptive rendering, extended terrain distance and configurable subdivision."
 resolver = "declarative"
 save_compatibility = "shared"
 
@@ -49,6 +49,32 @@ label = "32:9"
 [[plugin]]
 feature = "widescreen"
 id = "medievil.widescreen"
+
+[[option]]
+feature = "widescreen"
+id = "draw_distance"
+label = "Draw distance"
+type = "choice"
+default = "2x"
+
+[[option.choice]]
+value = "1x"
+label = "Original"
+
+[[option.choice]]
+value = "2x"
+label = "Extended (2x)"
+
+[[option.choice]]
+value = "3x"
+label = "Extended (3x)"
+
+[[option]]
+feature = "widescreen"
+id = "subdivision_bypass"
+label = "Bypass terrain subdivision (experimental)"
+type = "boolean"
+default = false
 
 # Capture-list reference at 0x80051104.
 [[patch]]

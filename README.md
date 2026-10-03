@@ -18,7 +18,10 @@ On the enhancement branch, **MediEvil Adaptive View** defaults to **Fit to
 Window**. Change its View option in the launcher's Mods settings for 4:3,
 16:9, 21:9 or 32:9. Fit follows wider window shapes with a 4:3 minimum;
 movies keep their original proportions. The branch uses bundled OpenBIOS
-with the BIOS shell skipped. See [enhancement validation](docs/ENHANCEMENTS.md)
+with the BIOS shell skipped. Visual defaults include the 1080p internal
+resolution preset, PGXP geometry correction and perspective textures. Adaptive
+View also offers Original, 2x (default) and 3x terrain distance, plus a default-off
+experimental terrain subdivision bypass. See [enhancement validation](docs/ENHANCEMENTS.md)
 for the tested route and remaining qualification work.
 
 | | |

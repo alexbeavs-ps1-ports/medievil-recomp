@@ -48,6 +48,18 @@ target_include_directories(psx-runtime PRIVATE
 target_sources(psx-runtime PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_widescreen.c")
 
+option(MEDIEVIL_BUILD_TESTS "Build MediEvil terrain contract checks" OFF)
+if(MEDIEVIL_BUILD_TESTS)
+    enable_testing()
+    add_executable(medievil_terrain_test tests/test_terrain_enhancements.c)
+    target_include_directories(medievil_terrain_test PRIVATE
+        "${PSXRECOMP_ROOT}/runtime/include")
+    if(NOT WIN32)
+        target_link_libraries(medievil_terrain_test PRIVATE m)
+    endif()
+    add_test(NAME medievil_terrain_contracts COMMAND medievil_terrain_test)
+endif()
+
 # Stage runtime configs next to the exe for direct build/ launches. Only copy
 # files that exist — never fail POST_BUILD when game_options.toml is absent.
 foreach(_PSX_RUNTIME_CONFIG game.toml game_options.toml)

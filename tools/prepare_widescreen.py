@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT / 'psxrecomp/tools'))
 from aot_overlay_pipeline import Disc
 
 # All constructors/readers/writers of the 100-entry marked-cell list, including
-# the branch delay-slot LUI in its cleanup routine. New table: 1024 + sentinel.
+# the branch delay-slot LUI in its cleanup routine. New table: 2048 + sentinel.
 RELOCATIONS = {
     0x80051104: (0x3C03800F, 0x3C038030),
     0x80051108: (0xAC60EA24, 0xAC600000),
@@ -29,10 +29,25 @@ RELOCATIONS = {
     0x80052098: (0x2463EA24, 0x24630000),
 }
 
+# Function boundaries and the optional subdivision thresholds are verified
+# against the owned executable, independently of any generated C output.
+ENGINE_GUARDS = {
+    0x800514FC: 0x3C02800F, 0x80051500: 0x944217BE,
+    0x8005176C: 0x27BDFF08, 0x80051770: 0xAFB500E4,
+    0x80021CEC: 0x27BDFF50,
+    0x8007A02C: 0x27BDFFE0, 0x8007A030: 0xAFB00010,
+    0x8007A0C0: 0x27BDFFE8, 0x8007A0C4: 0xAFB00010,
+    0x80022108: 0x290A1000, 0x8002279C: 0x290A1000,
+    0x80021EAC: 0x1900FFCF, 0x8002249C: 0x1D000006, 0x800224B0: 0x0501FE4E,
+}
+
 def main():
     disc = Disc(Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / 'disc/MediEvil (USA).cue')
     data = disc.read('MEDIEVIL.EXE')
     base = struct.unpack_from('<I', data, 0x18)[0]
+    for address, expected in ENGINE_GUARDS.items():
+        if struct.unpack_from('<I', data, 0x800 + address - base)[0] != expected:
+            raise ValueError(f'Terrain engine guard failed at {address:#x}')
     profile_path = ROOT / 'aot/overlays.json'
     profile = json.loads(profile_path.read_text())
     sha = hashlib.sha256(Path(disc.binary).read_bytes()).hexdigest()
@@ -57,7 +72,7 @@ version = "1.0.0"
 name = "MediEvil Adaptive View"
 author = "MediEvil Recompiled"
 license = "GPL-3.0-only"
-description = "Native-wide rendering with expanded terrain capture and polygon buffers."
+description = "Adaptive rendering, extended terrain distance and configurable subdivision."
 resolver = "declarative"
 save_compatibility = "shared"
 
@@ -102,6 +117,32 @@ label = "32:9"
 [[plugin]]
 feature = "widescreen"
 id = "medievil.widescreen"
+
+[[option]]
+feature = "widescreen"
+id = "draw_distance"
+label = "Draw distance"
+type = "choice"
+default = "2x"
+
+[[option.choice]]
+value = "1x"
+label = "Original"
+
+[[option.choice]]
+value = "2x"
+label = "Extended (2x)"
+
+[[option.choice]]
+value = "3x"
+label = "Extended (3x)"
+
+[[option]]
+feature = "widescreen"
+id = "subdivision_bypass"
+label = "Bypass terrain subdivision (experimental)"
+type = "boolean"
+default = false
 '''
     lba, _ = disc.files['MEDIEVIL.EXE']
     for address, (expected, replacement) in RELOCATIONS.items():
@@ -146,7 +187,7 @@ replace = "{struct.pack('<I',replacement).hex(' ')}"
     }]
     profile['expected_records'] = 28
     profile_path.write_text(json.dumps(profile, indent=2)+'\n', newline='\r\n')
-    print('Verified 10 capture-list guards and unique TL cull instruction; added patched native AOT producer')
+    print('Verified capture, fog, distance, subdivision and TL instruction guards; added patched native AOT producer')
 
 if __name__ == '__main__':
     main()

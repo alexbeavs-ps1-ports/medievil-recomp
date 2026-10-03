@@ -9,7 +9,12 @@ The enhancement branch defaults to bundled OpenBIOS with the BIOS shell skipped.
 Its adaptive native-wide view has been checked through Dan's Crypt, including
 dialogue, player movement, 16:9/21:9/32:9 and live window resizing. Engine and
 level entries used static native dispatch. Wider capture and culling hooks
-retain the original vertical/depth tests. Audio, save/load and the remaining
+retain the original vertical/depth tests. The latest build uses the 1080p
+preset, PGXP geometry/perspective correction and CPU provenance by default.
+Terrain distance defaults to 2x; Original and 3x are selectable, and an
+experimental subdivision bypass defaults off. Saturation-aware terrain winding
+and conservative tall-wall capture fill the previously observed Crypt gaps.
+Audio, save/load and the remaining
 levels have not been qualified by that route. Earlier checks also compared
 intro/engine behavior against the owned disc and a retail BIOS.
 The historical retail-only requirement below does not describe this branch.

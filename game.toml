@@ -33,7 +33,7 @@ known_sha1 = [
 seeds = "seeds/ghidra_funcs.txt"
 out_dir = "generated"
 strict = true
-mod_function_entry_funcs = ["0x8005176C", "0x80021CEC"]
+mod_function_entry_funcs = ["0x8005176C", "0x80021CEC", "0x800514FC", "0x8007A02C", "0x8007A0C0"]
 
 [runtime]
 window_title = "MediEvil Recompiled"
@@ -50,6 +50,12 @@ overlay_cache = true
 [video]
 renderer = "opengl"
 aspect_ratio = "4:3"
+internal_resolution = "1080p"
+resolution_reference_lines = 240
+geometry_correction = true
+perspective_texturing = true
+pgxp_cpu_mode = true
+pgxp_tolerance = 1.0
 
 # Native-wide world rendering; activation and view choices belong to the mod.
 [widescreen]
@@ -57,6 +63,7 @@ offer = false
 adaptive_view = true
 native_wide = true
 gte_game_mode = true
+precise_nclip = true
 # MediEvil's world uses polygons throughout; only explicitly tagged HUD
 # packets may move to screen edges. The generic corner heuristic tears meshes.
 nw_hud_corners = false
@@ -73,6 +80,8 @@ clip_edge_x_load_sites = ["0x8009A598", "0x8009A6EC"]
 bltz_sites = ["0x8009A5AC"]
 # This box routine counts X signs before its separate Y and depth tests.
 branch_keep_sites = ["0x8009A6D4"]
+# Full-word-bound terrain winding consumers; architectural MAC0 stays stock.
+nclip_exact_sites = ["0x80021EAC", "0x8002249C", "0x800224B0"]
 
 [[widescreen.cull.masked_reject]]
 address = "0x80021ECC"

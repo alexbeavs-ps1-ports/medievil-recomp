@@ -130,14 +130,14 @@ binding before it receives static overlays; the pipeline fails closed for it.
 
 - Updated framework/UI gitlinks and the recorded pins/manifest; the framework
   URL uses the canonical upstream containing the selected AOT implementation.
-- Added the PGXP build flag to the primary executable. The shared PGXP mod
-  remains opt-in in the launcher; compiling tracking does not enable it.
+- Added the PGXP build flag to the primary executable. Geometry correction,
+  perspective textures and CPU provenance tracking now default on.
 - Connected generated static overlay C to the game target and included `aot/`
   in the setup package's source tree. Native fallback caching stays enabled.
 - Added the verified split Track 1 sizes/digests to normal disc validation.
 - Supplied recomp-net header declarations for the pinned runtime's launcher
   status type when netplay is off. This does not enable a network session.
-- Kept retail rendering defaults while the adaptive widescreen adapter is built.
+- Added the default adaptive view and visual defaults described below.
 
 Generation command (from the project root, with a configured toolchain):
 
@@ -283,7 +283,7 @@ included in the live route.
 
 ## Horizontal projection folding correction (2026-10-02)
 
-The current framework pin is local commit
+The horizontal projection correction first landed in local commit
 `3787120488cf343bb167b87b18e5b614aa752256`, extending the same upstream
 `641537be8210f96f61a8ad69d6021844b56e30e1` baseline. It remains on
 `feat/guarded-packed-wide-cull` and must be published before clean downstream
@@ -308,8 +308,85 @@ Screenshots and receipts remain private under ignored analysis/. This establishe
 the captured folding mechanism and live execution; it does not conclusively
 match every part of the owner's reported left-wall deformation.
 
-The remaining visual scope is unchanged: higher internal resolution is available
-in the shared renderer but the local playtest still uses native resolution;
-general geometry and perspective texture correction remain off by default.
-Extended draw distance with matching fog/ordering-table growth and an optional
-terrain-subdivision bypass are not implemented. Full visual parity is not claimed.
+## Visual defaults and extended terrain (2026-10-02)
+
+The current framework pin is `a95d8c77ee57d5aee84cc46142a0ac6f86d52cd7`,
+merging upstream master `973d93a90761c8ef986ce9af63965d96a3613ed3` with
+the native-wide fixes on `feat/guarded-packed-wide-cull`. These local framework
+commits must be published before a clean downstream checkout can resolve the
+gitlink. The current dependency gitlinks resolve locally; a recursive fetch
+encountered an unavailable historical netplay revision, so upstream was fetched
+without recursing into its historical submodules.
+
+| Setting | Default | Behavior |
+| --- | --- | --- |
+| Internal resolution | 1080p preset | Integer 5x scale from the 240-line reference, producing 1200 internal lines |
+| PGXP | On | Geometry correction, perspective textures and CPU provenance; tolerance 1.0 |
+| Adaptive view | Fit | Reveals more world at the window ratio, with a 4:3 minimum |
+| Terrain distance | 2x | Mod option also offers Original and 3x |
+| Terrain subdivision bypass | Off | Experimental option bypasses two guarded depth thresholds |
+
+The terrain adapter uses verified USA function boundaries and retains the guest
+capture-record, marked-cell cleanup and primitive-list contracts. It replaces
+the ground-intersection capture footprint with a conservative camera-centered
+XZ disk, so a tall wall is not discarded solely because its ground footprint
+lies outside the original capture frustum. Cells are sorted nearest first,
+deduplicated through the original capture flag and bounded by 2048 records and
+8192 raw polygon references. Existing vertical, depth and backface tests still
+run. Object activation, collision and simulation distance remain game-owned.
+
+Fog occupies an expanded-RAM arena with 1024 entries and padding. The original
+fog-parameter and animation routines still build the curve. Increasing the
+viewport's SZ-to-ordering-table shift extends the existing table's reach;
+the ordering-table allocation, size and terminators remain guest-owned. This
+trades depth-bucket precision for reach. Teardown restores the original viewport
+fields only when they still match the adapter's recorded values and never frees
+the expanded arena through the guest heap. Bookkeeping resides in guest RAM for
+timeline consistency. Repeated frames do not compound the distance multiplier.
+Distance is bounded by the exclusive table/fog ceiling: the observed title
+distance changes from 5632 to 11264, and Crypt from 4096 to 8191 at 2x.
+
+The subdivision option changes only instruction-verified thresholds at
+`0x80022108` and `0x8002279C`, using executable-RAM invalidation so AOT and
+fallback both observe the change. The original OTZ >= 4 near rejection remains.
+The option is experimental because removing subdivision can reduce geometry
+quality near the camera. Executable invalidation can also move affected code
+through fallback dispatch; no comparative performance benchmark is claimed.
+It defaults off.
+
+The shared renderer now also supplies full-instruction-guarded native-wide
+NCLIP branch predicates for three terrain winding consumers. Saturated X can
+make the original integer area zero or reverse its sign before the renderer
+ever receives the polygon. The predicate uses fresh, packet-word-validated
+projection provenance to recover winding, with near-plane, missing-depth,
+stale-data and timeline fallbacks. Architectural NCLIP results and guest
+registers remain unchanged. Codegen version 14 and overlay callback ABI 27
+invalidate older cached code. The debug counter `ws_nw.nclip_rescues` counts
+changed branch decisions rather than rendered primitives.
+
+Windows Release and diagnostic builds pass. The terrain contract test exercises
+fog ownership/restoration, noncompounding distance, tall-wall capture, duplicate
+cell IDs, dense-grid budgets and guarded subdivision writes. Shared real-GTE,
+interpreter, codegen and cached-callback tests pass, together with the 53-method
+AOT suite and the new upstream ChangeThread-self and TCC include checks.
+Live visual qualification is recorded below. Full visual parity is not claimed;
+transform interpolation, outdoor/boss/TL coverage, audio and save/load still
+require separate qualification.
+
+The final OpenBIOS/OpenGL diagnostic route reached the title menu and Dan's
+Crypt. Fit at a 2048x490 client area produced an 8020x1200 captured native-wide
+surface at 5x scale. Live PGXP reported geometry correction, perspective
+triangles and CPU tracking enabled at tolerance 1.0. Winding-rescue and saturated
+projection counters advanced. Crypt captures filled the previously missing
+walls and ceiling, including the room beyond the gate; lateral left movement,
+4:3, 16:9, 21:9, 32:9 and Fit transitions remained responsive. This supports the
+observed saturation/capture corrections, not a claim that every level or every
+frame of the original deformation report has been reproduced.
+
+A separate restart with 3x distance and subdivision bypass enabled reached the
+Crypt. Both executable thresholds read back as `0x290A0000`, the Crypt far
+distance was 12288, and the viewport used reach 16384/shift 2. Default 2x used
+8191 and reach 8192/shift 1. Render records stayed within their arenas in the
+sampled route. The subdivision option retained the near rejection and the live
+test did not establish universal near-camera quality. Private mod state was
+restored after the test; the player build retains the default-off setting.
