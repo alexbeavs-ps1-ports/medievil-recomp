@@ -145,3 +145,17 @@ This candidate targets Windows x64, Linux x64, macOS ARM64, and macOS x64.
 These setup packages require your legally owned game disc and a supported
 regional retail BIOS. They remain unpublished until their exact package tests
 and release authorization pass.
+
+## Enhancement foundation: OpenBIOS and native overlays
+
+This development branch defaults to bundled MIT-licensed OpenBIOS and skips
+the BIOS shell while retaining its kernel initialization and services. A retail
+BIOS is optional. The historical package requirement above does not apply to
+this branch.
+
+The verified USA disc's main engine and 26 uncompressed overlays now have
+explicit ahead-of-time compilation recipes. Generated code and disc assets
+remain outside Git. PGXP tracking is compiled for subsequent visual mods.
+Windows Release builds and OpenBIOS intro/main-engine startup checks pass;
+full-game and packaged cross-platform qualification remain pending. See
+[implementation and validation](docs/ENHANCEMENTS.md).
