@@ -176,3 +176,20 @@ address polygons disappearing or folding at wide boundaries. Stock vertical,
 depth and backface checks remain. Dan's Crypt, dialogue, player movement and
 fixed/adaptive aspect changes have been tested with OpenBIOS and OpenGL.
 Remaining levels and complete title-scene boundary coverage need qualification.
+
+## Enhancement: sharper and more complete terrain
+
+The 1080p internal-resolution preset uses integer 5x rendering from the game's
+240-line reference. PGXP geometry precision and perspective textures reduce
+polygon wobble and texture warping.
+
+Adaptive View offers Original, 2x and 3x terrain distance, with expanded fog
+storage and bounded capture/primitive arenas. Conservative capture retains
+tall walls outside the original ground footprint, and saturation-aware winding
+checks recover terrain the original screen-coordinate tests would discard.
+The subdivision bypass is selectable independently of draw distance.
+
+Windows Release/diagnostic builds and contract tests pass. Live Crypt testing
+fills missing walls and ceiling, including the room beyond the gate. Both 2x
+and 3x distance and the subdivision option have been exercised. Extreme-aspect
+title-scene black regions and other levels remain qualification work.
