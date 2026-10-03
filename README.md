@@ -52,8 +52,12 @@ BIOS/ROM/save plumbing so you are not stuck repeating each game’s wizard by ha
 ## Legal
 
 You must own the original game. Disc images under `disc/` are gitignored and
-must never be committed. This package requires a legal SCPH-1001 BIOS dump.
-OpenBIOS is not supported. Retail BIOS dumps are not redistributed.
+must never be committed. This development branch includes the MIT-licensed
+OpenBIOS as its default; an owned SCPH-1001 BIOS remains an optional alternative.
+The default skips the BIOS boot animation while retaining OpenBIOS kernel
+initialization and EXE loading. BIOS kernel-call HLE remains disabled.
+OpenBIOS has passed intro and main-engine startup checks. Full gameplay and
+save/load qualification remain pending. Retail BIOS dumps are not redistributed.
 
 ## License
 
@@ -77,11 +81,13 @@ Optional box art under `launcher_assets/img/` may come from
 git submodule update --init --recursive
 ./psxrecomp/tools/ci/build_emitters.sh
 python3 psxrecomp/psxrecomp_cli.py generate \
-  --config game.toml --project-root . --disc disc/<your>.cue \
-  --bios /path/to/SCPH1001.BIN
+  --config game.toml --project-root . --disc disc/<your>.cue
 cmake -S . -B build-release -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-release --target psx-runtime
 ```
+
+To use your retail BIOS instead, add `--bios /path/to/SCPH1001.BIN` to Generate
+and select that BIOS in the launcher.
 
 Zip prefix for CI artifacts: `medievil-recomp`.
 
@@ -132,3 +138,17 @@ This candidate targets Windows x64, Linux x64, macOS ARM64, and macOS x64.
 These setup packages require your legally owned game disc and a supported
 regional retail BIOS. They remain unpublished until their exact package tests
 and release authorization pass.
+
+## Enhancement foundation: OpenBIOS and native overlays
+
+This development branch defaults to bundled MIT-licensed OpenBIOS and skips
+the BIOS shell while retaining its kernel initialization and services. A retail
+BIOS is optional. The historical package requirement above does not apply to
+this branch.
+
+The verified USA disc's main engine and 26 uncompressed overlays now have
+explicit ahead-of-time compilation recipes. Generated code and disc assets
+remain outside Git. PGXP tracking is compiled for subsequent visual mods.
+Windows Release builds and OpenBIOS intro/main-engine startup checks pass;
+full-game and packaged cross-platform qualification remain pending. See
+[implementation and validation](docs/ENHANCEMENTS.md).
