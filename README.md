@@ -14,6 +14,19 @@ Static recompilation of **MediEvil** built on
 
 MediEvil recompiled for modern systems using psxrecomp.
 
+On the enhancement branch, **MediEvil Adaptive View** defaults to **Fit to
+Window**. Change its View option in the launcher's Mods settings for 4:3,
+16:9, 21:9 or 32:9. Fit follows wider window shapes with a 4:3 minimum;
+movies keep their original proportions. The branch uses bundled OpenBIOS
+with the BIOS shell skipped. Visual defaults include the 1080p internal
+resolution preset, PGXP geometry correction and perspective textures. Adaptive
+View also offers Original, 2x and 3x (default) terrain distance, with terrain
+subdivision bypass enabled by default. Smooth Presentation follows the display
+refresh by default, with 60/120/144/240/360 FPS choices. These are presentation
+targets using temporal image blending; the game retains its original timing.
+Live throughput can fall below the selected rate. See [enhancement validation](docs/ENHANCEMENTS.md)
+for the tested route and remaining qualification work.
+
 | | |
 |---|---|
 | Players | 1 |
@@ -52,8 +65,12 @@ BIOS/ROM/save plumbing so you are not stuck repeating each game’s wizard by ha
 ## Legal
 
 You must own the original game. Disc images under `disc/` are gitignored and
-must never be committed. This package requires a legal SCPH-1001 BIOS dump.
-OpenBIOS is not supported. Retail BIOS dumps are not redistributed.
+must never be committed. This development branch includes the MIT-licensed
+OpenBIOS as its default; an owned SCPH-1001 BIOS remains an optional alternative.
+The default skips the BIOS boot animation while retaining OpenBIOS kernel
+initialization and EXE loading. BIOS kernel-call HLE remains disabled.
+OpenBIOS has passed intro and main-engine startup checks. Full gameplay and
+save/load qualification remain pending. Retail BIOS dumps are not redistributed.
 
 ## License
 
@@ -77,11 +94,13 @@ Optional box art under `launcher_assets/img/` may come from
 git submodule update --init --recursive
 ./psxrecomp/tools/ci/build_emitters.sh
 python3 psxrecomp/psxrecomp_cli.py generate \
-  --config game.toml --project-root . --disc disc/<your>.cue \
-  --bios /path/to/SCPH1001.BIN
+  --config game.toml --project-root . --disc disc/<your>.cue
 cmake -S . -B build-release -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-release --target psx-runtime
 ```
+
+To use your retail BIOS instead, add `--bios /path/to/SCPH1001.BIN` to Generate
+and select that BIOS in the launcher.
 
 Zip prefix for CI artifacts: `medievil-recomp`.
 
@@ -132,3 +151,77 @@ This candidate targets Windows x64, Linux x64, macOS ARM64, and macOS x64.
 These setup packages require your legally owned game disc and a supported
 regional retail BIOS. They remain unpublished until their exact package tests
 and release authorization pass.
+
+## Enhancement foundation: OpenBIOS and native overlays
+
+This development branch defaults to bundled MIT-licensed OpenBIOS and skips
+the BIOS shell while retaining its kernel initialization and services. A retail
+BIOS is optional. The historical package requirement above does not apply to
+this branch.
+
+The verified USA disc's main engine and 26 uncompressed overlays now have
+explicit ahead-of-time compilation recipes. Generated code and disc assets
+remain outside Git. PGXP tracking is compiled for subsequent visual mods.
+Windows Release builds and OpenBIOS intro/main-engine startup checks pass;
+full-game and packaged cross-platform qualification remain pending. See
+[implementation and validation](docs/ENHANCEMENTS.md).
+
+## Enhancement: adaptive world rendering
+
+MediEvil Adaptive View is a default-on mod. Fit to Window reveals additional
+world geometry at the current aspect ratio, with a 4:3 minimum; fixed 4:3,
+16:9, 21:9 and 32:9 are available in Mods. Movies keep their original aspect
+and the HUD retains its authored scale.
+
+The title adapter expands bounded render storage and terrain capture. Shared
+instruction-guarded culling and packet-validated horizontal projection recovery
+address polygons disappearing or folding at wide boundaries. Stock vertical,
+depth and backface checks remain. Dan's Crypt, dialogue, player movement and
+fixed/adaptive aspect changes have been tested with OpenBIOS and OpenGL.
+Remaining levels and complete title-scene boundary coverage need qualification.
+
+## Enhancement: sharper and more complete terrain
+
+The 1080p internal-resolution preset uses integer 5x rendering from the game's
+240-line reference. PGXP geometry precision and perspective textures reduce
+polygon wobble and texture warping.
+
+Adaptive View offers Original, 2x and 3x terrain distance, with expanded fog
+storage and bounded capture/primitive arenas. Conservative capture retains
+tall walls outside the original ground footprint, and saturation-aware winding
+checks recover terrain the original screen-coordinate tests would discard.
+The subdivision bypass is selectable independently of draw distance.
+
+Windows Release/diagnostic builds and contract tests pass. Live Crypt testing
+fills missing walls and ceiling, including the room beyond the gate. Both 2x
+and 3x distance and the subdivision option have been exercised. Extreme-aspect
+title-scene black regions and other levels remain qualification work.
+
+## Enhancement: default-on visual mods and display-rate presentation
+
+| Control | Default | Where to change it |
+| --- | --- | --- |
+| Adaptive world view | Fit to Window | Mods: MediEvil Adaptive View |
+| Terrain distance | 3x | Adaptive View: Original / 2x / 3x |
+| Terrain subdivision bypass | On | Adaptive View: Bypass terrain subdivision |
+| PGXP geometry and perspective textures | On, CPU propagation on | Mods: MediEvil PGXP Precision |
+| Smooth Presentation | Display | Mods: Display / 60 / 120 / 144 / 240 / 360 FPS |
+| Internal resolution | 1080p preset | Display settings; integer 5x at the 240-line reference |
+
+Smooth Presentation reuses the shared OpenGL motion-adaptive frame blending
+path. It follows real game frame flips so a game frame can span multiple
+VBlanks. Gameplay, input, timers and audio keep their original speed. It blends
+completed images rather than generating new geometry or motion vectors; moving
+edges can soften and presentation includes a source-frame delay. Display follows
+the measured monitor refresh, while the fixed choices set presentation targets.
+
+Both terrain subdivision selections are compiled ahead of time from separately
+verified patched engine images. Selecting bypass no longer invalidates engine
+code at startup. PGXP uses the shared plugin behind a title default-on manifest;
+turning the mod off restores the base correction settings on the next launch.
+Changes to Mods take effect when the game starts again.
+
+These defaults target visual quality while retaining the game's simulation
+cadence. Starting-room/hallway visibility, frame pacing and PGXP mod ownership
+are validated in the enhancement receipt; remaining title/outdoor boundary
+coverage and full-game save/audio checks are still documented there.

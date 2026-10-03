@@ -18,28 +18,102 @@ out_dir = "disc"
 bin_name = "disc1.bin"
 cue_name = "disc1.cue"
 boot_exe = "SCUS_942.27"
-known_sizes = [561744624]
+# Accept both combined and split-track USA dumps; retain digest validation.
+known_sizes = [561744624, 528755472]
 known_md5 = [
   "4be211c0df746cdd8c3905467eaa103e",
+  "53d908f5bd11d86f3deda75c2da3b750",
 ]
 known_sha1 = [
   "8536f740358f05ab15e501da41572df1eddfc1ce",
+  "928257764f5107c9d27aa3e2d469c43aee591abd",
 ]
 
 [recompiler]
 seeds = "seeds/ghidra_funcs.txt"
 out_dir = "generated"
 strict = true
+mod_function_entry_funcs = ["0x8005176C", "0x80021CEC", "0x800514FC", "0x8007A02C", "0x8007A0C0"]
 
 [runtime]
 window_title = "MediEvil Recompiled"
 memcard_dir = "saves"
 bios_hle = false
-openbios = false
+# Skip the BIOS shell; OpenBIOS still initializes its kernel and loads the EXE.
+fast_boot = true
+# Bundled OpenBIOS is the default when no retail BIOS was explicitly chosen.
+# Intro/engine startup validated; gameplay and save/load qualification pending.
+openbios = true
+# Keep the native fallback cache available for code not covered by offline AOT.
+overlay_cache = true
 
 [video]
 renderer = "opengl"
 aspect_ratio = "4:3"
+internal_resolution = "1080p"
+resolution_reference_lines = 240
+# The default-on PGXP mod owns these toggles; disabling it restores stock math.
+geometry_correction = false
+perspective_texturing = false
+pgxp_cpu_mode = true
+pgxp_tolerance = 1.0
+
+# Native-wide world rendering; activation and view choices belong to the mod.
+[widescreen]
+offer = false
+adaptive_view = true
+native_wide = true
+gte_game_mode = true
+precise_nclip = true
+# MediEvil's world uses polygons throughout; only explicitly tagged HUD
+# packets may move to screen edges. The generic corner heuristic tears meshes.
+nw_hud_corners = false
+nw_backdrop = true
+
+[widescreen.cull]
+guard_pixels = 32
+auto_screen_x = true
+screen_w_imms = ["0x140", "0x141", "0x200"]
+screen_h_imms = ["0xF0", "0xF1", "0x100"]
+# The 3D viewport stores 512 in scratchpad even though its authored aspect is 4:3.
+clip_edge_width = 512
+clip_edge_x_load_sites = ["0x8009A598", "0x8009A6EC"]
+bltz_sites = ["0x8009A5AC"]
+# This box routine counts X signs before its separate Y and depth tests.
+branch_keep_sites = ["0x8009A6D4"]
+# Full-word-bound terrain winding consumers; architectural MAC0 stays stock.
+nclip_exact_sites = ["0x80021EAC", "0x8002249C", "0x800224B0"]
+
+[[widescreen.cull.masked_reject]]
+address = "0x80021ECC"
+expected = "0x15E0FFC7"
+reject_mask = "0xFFFF0000"
+
+[[widescreen.cull.masked_reject]]
+address = "0x800225D8"
+expected = "0x15E0FE04"
+reject_mask = "0xFFFF0000"
+
+[[widescreen.cull.masked_reject]]
+address = "0x80025178"
+expected = "0x14400011"
+reject_mask = "0xFFFF0000"
+
+[[widescreen.cull.masked_reject]]
+address = "0x80025A1C"
+expected = "0x14400011"
+reject_mask = "0xFFFF0000"
+
+[[widescreen.cull.masked_reject]]
+address = "0x80025B48"
+expected = "0x14400011"
+reject_mask = "0xFFFF0000"
+
+# TL has a separate polygon funnel. The word is unique across the owned overlays.
+[[widescreen.cull.masked_reject]]
+address = "0x800109E4"
+expected = "0x144001A5"
+reject_mask = "0xFFFF0000"
 
 [controller]
 default_mode = "digital"
