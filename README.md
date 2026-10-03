@@ -159,3 +159,17 @@ remain outside Git. PGXP tracking is compiled for subsequent visual mods.
 Windows Release builds and OpenBIOS intro/main-engine startup checks pass;
 full-game and packaged cross-platform qualification remain pending. See
 [implementation and validation](docs/ENHANCEMENTS.md).
+
+## Enhancement: adaptive world rendering
+
+MediEvil Adaptive View is a default-on mod. Fit to Window reveals additional
+world geometry at the current aspect ratio, with a 4:3 minimum; fixed 4:3,
+16:9, 21:9 and 32:9 are available in Mods. Movies keep their original aspect
+and the HUD retains its authored scale.
+
+The title adapter expands bounded render storage and terrain capture. Shared
+instruction-guarded culling and packet-validated horizontal projection recovery
+address polygons disappearing or folding at wide boundaries. Stock vertical,
+depth and backface checks remain. Dan's Crypt, dialogue, player movement and
+fixed/adaptive aspect changes have been tested with OpenBIOS and OpenGL.
+Remaining levels and complete title-scene boundary coverage need qualification.
