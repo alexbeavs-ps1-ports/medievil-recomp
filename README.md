@@ -14,6 +14,13 @@ Static recompilation of **MediEvil** built on
 
 MediEvil recompiled for modern systems using psxrecomp.
 
+On the enhancement branch, **MediEvil Adaptive View** defaults to **Fit to
+Window**. Change its View option in the launcher's Mods settings for 4:3,
+16:9, 21:9 or 32:9. Fit follows wider window shapes with a 4:3 minimum;
+movies keep their original proportions. The branch uses bundled OpenBIOS
+with the BIOS shell skipped. See [enhancement validation](docs/ENHANCEMENTS.md)
+for the tested route and remaining qualification work.
+
 | | |
 |---|---|
 | Players | 1 |
@@ -52,8 +59,12 @@ BIOS/ROM/save plumbing so you are not stuck repeating each game’s wizard by ha
 ## Legal
 
 You must own the original game. Disc images under `disc/` are gitignored and
-must never be committed. This package requires a legal SCPH-1001 BIOS dump.
-OpenBIOS is not supported. Retail BIOS dumps are not redistributed.
+must never be committed. This development branch includes the MIT-licensed
+OpenBIOS as its default; an owned SCPH-1001 BIOS remains an optional alternative.
+The default skips the BIOS boot animation while retaining OpenBIOS kernel
+initialization and EXE loading. BIOS kernel-call HLE remains disabled.
+OpenBIOS has passed intro and main-engine startup checks. Full gameplay and
+save/load qualification remain pending. Retail BIOS dumps are not redistributed.
 
 ## License
 
@@ -77,11 +88,13 @@ Optional box art under `launcher_assets/img/` may come from
 git submodule update --init --recursive
 ./psxrecomp/tools/ci/build_emitters.sh
 python3 psxrecomp/psxrecomp_cli.py generate \
-  --config game.toml --project-root . --disc disc/<your>.cue \
-  --bios /path/to/SCPH1001.BIN
+  --config game.toml --project-root . --disc disc/<your>.cue
 cmake -S . -B build-release -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build-release --target psx-runtime
 ```
+
+To use your retail BIOS instead, add `--bios /path/to/SCPH1001.BIN` to Generate
+and select that BIOS in the launcher.
 
 Zip prefix for CI artifacts: `medievil-recomp`.
 
@@ -132,3 +145,31 @@ This candidate targets Windows x64, Linux x64, macOS ARM64, and macOS x64.
 These setup packages require your legally owned game disc and a supported
 regional retail BIOS. They remain unpublished until their exact package tests
 and release authorization pass.
+
+## Enhancement foundation: OpenBIOS and native overlays
+
+This development branch defaults to bundled MIT-licensed OpenBIOS and skips
+the BIOS shell while retaining its kernel initialization and services. A retail
+BIOS is optional. The historical package requirement above does not apply to
+this branch.
+
+The verified USA disc's main engine and 26 uncompressed overlays now have
+explicit ahead-of-time compilation recipes. Generated code and disc assets
+remain outside Git. PGXP tracking is compiled for subsequent visual mods.
+Windows Release builds and OpenBIOS intro/main-engine startup checks pass;
+full-game and packaged cross-platform qualification remain pending. See
+[implementation and validation](docs/ENHANCEMENTS.md).
+
+## Enhancement: adaptive world rendering
+
+MediEvil Adaptive View is a default-on mod. Fit to Window reveals additional
+world geometry at the current aspect ratio, with a 4:3 minimum; fixed 4:3,
+16:9, 21:9 and 32:9 are available in Mods. Movies keep their original aspect
+and the HUD retains its authored scale.
+
+The title adapter expands bounded render storage and terrain capture. Shared
+instruction-guarded culling and packet-validated horizontal projection recovery
+address polygons disappearing or folding at wide boundaries. Stock vertical,
+depth and backface checks remain. Dan's Crypt, dialogue, player movement and
+fixed/adaptive aspect changes have been tested with OpenBIOS and OpenGL.
+Remaining levels and complete title-scene boundary coverage need qualification.

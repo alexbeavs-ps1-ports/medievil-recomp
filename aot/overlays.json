@@ -1,0 +1,737 @@
+{
+  "schema": "psxrecomp AOT methods v1",
+  "game_id": "SCUS-94227",
+  "disc_hashes": {
+    "sha256": "d522a86c154524d634a0d9b84b2048b41cafe83013a87f2fa31a2c117aabce82"
+  },
+  "static_output": "generated/overlays_static.c",
+  "strict_bounds": true,
+  "expected_records": 28,
+  "bios_resident": false,
+  "evidence": {
+    "repository": "https://github.com/MediEvilDecompilation/medievil-decomp",
+    "commit": "6afe6fe35d5ddf0ce1bebdb2e72f8215b5b5b407",
+    "configs": "config/splat.game.yaml and config/splat.ovl*.yaml",
+    "validation": "All 28 image SHA1 values matched the owned USA disc on 2026-10-02. Boot EXE is compiled separately; the 27 remaining producers are uncompressed."
+  },
+  "images": [
+    {
+      "method": "psx_exe",
+      "files": [
+        "MEDIEVIL.EXE"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x800a9838",
+          "end": "0x800a9840",
+          "reason": "rodata segment in decomp config",
+          "sha256": "64ff715f9810fed4ee2769b810141d56f98285eb414a18bd29de4926bc8b7d10"
+        },
+        {
+          "start": "0x800baf78",
+          "end": "0x800baf80",
+          "reason": "rodata segment in decomp config",
+          "sha256": "2e71d2638550c15d2f0ea3e3385135f7af13e5f1953feab1dc56def4e5c66bbb"
+        },
+        {
+          "start": "0x800c532c",
+          "end": "0x800edca4",
+          "reason": "data segment in decomp config",
+          "sha256": "6208eab1979fd0ae6d8fdce8d991600182ee24a6c5e83f9fbf65aec26ded9517"
+        }
+      ],
+      "reference_sha1": "265ce5dc508002a339ae535e49a5b1b4e683b732",
+      "reference_size": 837632
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/AC.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010138",
+          "reason": "rodata segment in decomp config",
+          "sha256": "bd456fefa44105c4fad995dea13a69f26122e1dfd46f4e84ee738b49150545be"
+        },
+        {
+          "start": "0x800197d8",
+          "end": "0x8001cb60",
+          "reason": "data segment in decomp config",
+          "sha256": "e37e58148e3dec000d98bbe636256d55e44a39bbf4dcca8d669811647e54ad46"
+        }
+      ],
+      "reference_sha1": "fd900ccbc8940620563e60cb47c7124908fbbce0",
+      "reference_size": 52064,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/AG.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800100a0",
+          "reason": "rodata segment in decomp config",
+          "sha256": "17ebd949bf40aa67100c7dfafcba7fad309583c5af49dfc3e7bbc6d1696e2de8"
+        },
+        {
+          "start": "0x800100a0",
+          "end": "0x80010100",
+          "reason": "rodata segment in decomp config",
+          "sha256": "b69bba5b21ee43ab253bb52d5793d14ce669839b1c9615f05a5cf43df5719287"
+        },
+        {
+          "start": "0x80010100",
+          "end": "0x80010118",
+          "reason": "rodata segment in decomp config",
+          "sha256": "5bd82463553dccb80174e71515ffda8a7875562a35bad0aa22184d6a5e5ea2f8"
+        },
+        {
+          "start": "0x80016820",
+          "end": "0x800194cc",
+          "reason": "data segment in decomp config",
+          "sha256": "086b6fea69fe70a6821bf12f6162217a260a04325d67a63648d761e0dbbab7ad"
+        }
+      ],
+      "reference_sha1": "06bf5b6b52e1d4242b406d1fe4684b331c0d5354",
+      "reference_size": 38092,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/CC.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010160",
+          "reason": "rodata segment in decomp config",
+          "sha256": "14e361cf7f516929e46c72cdb5ce9bb359d276a3df9381fa3325f91682078f21"
+        },
+        {
+          "start": "0x80017198",
+          "end": "0x8001a0a0",
+          "reason": "data segment in decomp config",
+          "sha256": "de4e47932370ff853e667f43a6f4bb73a38240987bc17670ba9abd1787879c21"
+        }
+      ],
+      "reference_sha1": "554cee5a0a2b2160de8818513aecc5f67db219f5",
+      "reference_size": 41120,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/CH.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800100b0",
+          "reason": "rodata segment in decomp config",
+          "sha256": "089448bd52b143da2a00b5fe10d67289f99471a0863ba71d69754a39e7b55202"
+        },
+        {
+          "start": "0x800139b0",
+          "end": "0x800162fc",
+          "reason": "data segment in decomp config",
+          "sha256": "6223c08699abc86169425282d6d668752ac85e5137636f63feb310736ce47bb7"
+        }
+      ],
+      "reference_sha1": "87fd421e4990c34075e901b4d658ca51f24ff2c7",
+      "reference_size": 25340,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/CR.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010018",
+          "reason": "rodata segment in decomp config",
+          "sha256": "418c46d57463544e1923a5388c3f4d745f1019efdff601b698582af19f256baa"
+        },
+        {
+          "start": "0x80010940",
+          "end": "0x80011cb4",
+          "reason": "data segment in decomp config",
+          "sha256": "d5c03b0feb2236d87ab2c08649d7819a8085d36b37d5d73e737da48aebab3c5b"
+        }
+      ],
+      "reference_sha1": "b52e73eea027f2a517be47b6f2133e3a6ac73a15",
+      "reference_size": 7348,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/CREDITS.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010dd8",
+          "reason": "rodata segment in decomp config",
+          "sha256": "2d3563135e19f94ce0e3e6aebfeac7ec33edf12df6038b2d2a5c012d2318917e"
+        },
+        {
+          "start": "0x80012288",
+          "end": "0x800133bc",
+          "reason": "data segment in decomp config",
+          "sha256": "6c1ee2451c88c45dca2576a4ba0db330085b1a17fb795a90ac22017ca1b4799e"
+        }
+      ],
+      "reference_sha1": "4ac994ab3ff91dab30cb199e73320c6751965c53",
+      "reference_size": 13244,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/DC.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800101b0",
+          "reason": "rodata segment in decomp config",
+          "sha256": "75e67a78b32bbc79ac67956913d3fb13272d2c1650af3dc17fe225239e78a47f"
+        },
+        {
+          "start": "0x8001af88",
+          "end": "0x8001dcfc",
+          "reason": "data segment in decomp config",
+          "sha256": "9dc82734e202b697064f63dec52fbf963b66fdc0469314903f09e269f67368cb"
+        }
+      ],
+      "reference_sha1": "9451b3cfe3be9930ebee96e6790e2e6ec4aa22c8",
+      "reference_size": 56572,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/EE.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800101a0",
+          "reason": "rodata segment in decomp config",
+          "sha256": "dc5de4a6606a8b2d0dd79f37dd13c283246159c06d85b24a5228cce959b7f8c1"
+        },
+        {
+          "start": "0x8001aa60",
+          "end": "0x8001e964",
+          "reason": "data segment in decomp config",
+          "sha256": "053f3434aacd3ba38a80b940b34a47982bc4b1f5c24a7c5de847fe0e032d8b13"
+        }
+      ],
+      "reference_sha1": "e299c0820fe47fb99bc706f54b5dff1429a5bfcc",
+      "reference_size": 59748,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/EH.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010068",
+          "reason": "rodata segment in decomp config",
+          "sha256": "217a79f38667b350e313aff96ef38f64919889f57beaac41875db9db67acf995"
+        },
+        {
+          "start": "0x80012128",
+          "end": "0x800131b0",
+          "reason": "data segment in decomp config",
+          "sha256": "e21e84fe3499ad3cb99cd040685021badc9ce0e3ccaaf4fcc4362b68f9be0ec2"
+        }
+      ],
+      "reference_sha1": "6bb66f93efce2955a4c09526f93b25b5f9a40ce5",
+      "reference_size": 12720,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/GG.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800100a4",
+          "reason": "rodata segment in decomp config",
+          "sha256": "6238a4509a71738192ac37f87d80ae227168f335dd34feb24e0e5f107915b109"
+        },
+        {
+          "start": "0x80011a48",
+          "end": "0x800132c0",
+          "reason": "data segment in decomp config",
+          "sha256": "23041fc9d76373f94a322a25e6ddbc9b001ce4c75e58e95ec512b556bac393ce"
+        }
+      ],
+      "reference_sha1": "fe4dbcaec959c190509508f17f3876640d8279f5",
+      "reference_size": 12992,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/GS.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010158",
+          "reason": "rodata segment in decomp config",
+          "sha256": "ffd7b1a628eacf8e0c6cc425a18894c41f5c8bff4d7bc44752ee3d6d7a926c38"
+        },
+        {
+          "start": "0x80014f10",
+          "end": "0x80018650",
+          "reason": "data segment in decomp config",
+          "sha256": "ea6af9cf7c419b5463778dc279b5f7ca32ffcf74ecb4b0a8225ab6b365865781"
+        }
+      ],
+      "reference_sha1": "d0e17f3e271e98c4b9ac0ff26e44a529a1f67182",
+      "reference_size": 34384,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/GY1.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010078",
+          "reason": "rodata segment in decomp config",
+          "sha256": "e022dc0fb93ff5a27a2e5be46b524c821deb5af8655d94a70954ef448775eff7"
+        },
+        {
+          "start": "0x80012d90",
+          "end": "0x80014a68",
+          "reason": "data segment in decomp config",
+          "sha256": "60e42f16c58d4755097a356b58d421089497f26462743ecd32689a8a8dc5acd7"
+        }
+      ],
+      "reference_sha1": "8fc50a18dab3e4fc53fd6927ff00e4e9ead449e0",
+      "reference_size": 19048,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/GY2.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010128",
+          "reason": "rodata segment in decomp config",
+          "sha256": "85266d8a9e9b73c9563a8032acbb979ec2f5011aa430bf005b48b31a96d54799"
+        },
+        {
+          "start": "0x80017458",
+          "end": "0x8001a060",
+          "reason": "data segment in decomp config",
+          "sha256": "cdc9668ff351d042918ff8df4f06b4452a53115df2882adf439d2c9be1390f77"
+        }
+      ],
+      "reference_sha1": "0de8a92afb3823b56b7818083ba75b9f6d98e015",
+      "reference_size": 41056,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/HH.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010088",
+          "reason": "rodata segment in decomp config",
+          "sha256": "84fb1ae8f73223b5d2c36a58d055b52339ee19af6eac344cab89e0a9ef248e8b"
+        },
+        {
+          "start": "0x80014ab0",
+          "end": "0x8001c1ec",
+          "reason": "data segment in decomp config",
+          "sha256": "21858f06594bb6204a9600d7789ab694dacecfc9c476ff6433660aeb11ad469c"
+        }
+      ],
+      "reference_sha1": "991b047edbbc62bd6532be146d9401a60f65defc",
+      "reference_size": 49644,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/HR.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010180",
+          "reason": "rodata segment in decomp config",
+          "sha256": "9395c976d1f89882b755356b96fb1eb220ff1faaa78c23400ca6c70851cc3560"
+        },
+        {
+          "start": "0x80017c88",
+          "end": "0x8001c174",
+          "reason": "data segment in decomp config",
+          "sha256": "7756cd6c8cedf521d836600ef27c59c4d9afc1cab76f46f68010cd6edb3ca9b6"
+        }
+      ],
+      "reference_sha1": "7ee70db9b39e3bea66cf8934911880b52dd91289",
+      "reference_size": 49524,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/IA.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800100b8",
+          "reason": "rodata segment in decomp config",
+          "sha256": "3b4fa87b2453699f67ab0e1f301c7e6ec1bba84215d5ae21eb881202ab6cbef4"
+        },
+        {
+          "start": "0x80012e48",
+          "end": "0x800157f0",
+          "reason": "data segment in decomp config",
+          "sha256": "a493ff83c50c763efce630e8755ad3e43fe967ba96705a76bcb5e5cb4aa5f7b4"
+        }
+      ],
+      "reference_sha1": "4584571a6ff512a7418432f29de8146bef4e51f8",
+      "reference_size": 22512,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/LA.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800100e8",
+          "reason": "rodata segment in decomp config",
+          "sha256": "0ceb2f214e840bca2d711e0f5e6e6b90d5a9f950f60697748fd2d0205401dc14"
+        },
+        {
+          "start": "0x80014908",
+          "end": "0x800178cc",
+          "reason": "data segment in decomp config",
+          "sha256": "8c7225d242dfd4203f19b8b9dd447958e382b34454850ae7c01c5d3e14281969"
+        }
+      ],
+      "reference_sha1": "03706c818baa6f1361faa9abf24607f7e8976771",
+      "reference_size": 30924,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/LANDMAP.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800101d8",
+          "reason": "rodata segment in decomp config",
+          "sha256": "510d8caa0a2d612ce2b2b410818a099a590e9e0c7f11d5f87793bb28b7225f27"
+        },
+        {
+          "start": "0x800145f0",
+          "end": "0x80014f2c",
+          "reason": "data segment in decomp config",
+          "sha256": "cf5c805746f2b77c105301c2167538cbe240b28d26c11a26309d5ac9595b4755"
+        }
+      ],
+      "reference_sha1": "021af3a550f58046073a75f6d4f9d0dd462748da",
+      "reference_size": 20268,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/PD.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010048",
+          "reason": "rodata segment in decomp config",
+          "sha256": "3c0078d52ac1ada78cc217ebb3e025c0b486dbed7fe736042ced5514754b1e03"
+        },
+        {
+          "start": "0x800135e0",
+          "end": "0x80015cd4",
+          "reason": "data segment in decomp config",
+          "sha256": "324011d615d70b1a1d5cf23e3bf2e3a4f60740282367aeaa79d9680defda894f"
+        }
+      ],
+      "reference_sha1": "97825ec5456d6aa6dfa839c2bb5da5e875e7c165",
+      "reference_size": 23764,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/PG.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800100c8",
+          "reason": "rodata segment in decomp config",
+          "sha256": "88835fbe8be1189c98bf2cd51c9796f23ba01b931aadec40403ea5c770768dc5"
+        },
+        {
+          "start": "0x80017310",
+          "end": "0x800194e0",
+          "reason": "data segment in decomp config",
+          "sha256": "c0d4868b4ca39f8654ff3a25c61e3beb297ca61a7818172f51dc079956f91a28"
+        }
+      ],
+      "reference_sha1": "ab7967451c8395c76bdc683b78d42bd60e47405d",
+      "reference_size": 38112,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/PS.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010198",
+          "reason": "rodata segment in decomp config",
+          "sha256": "9ec9cbfb1f2837b6a7c2fd6642007c3166c769cc8d53aa9ddb1ba9a7927c2122"
+        },
+        {
+          "start": "0x8001a5b8",
+          "end": "0x8001cf24",
+          "reason": "data segment in decomp config",
+          "sha256": "584b946c4b5f352015a9d7cd13ab8d5b575dbc54b970732e2ffdbca55d4c1122"
+        }
+      ],
+      "reference_sha1": "92c871bee68855dad4229da6d15fbaaa00b802cf",
+      "reference_size": 53028,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/SF.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800101f8",
+          "reason": "rodata segment in decomp config",
+          "sha256": "8ce524f06a01ecb460351ce1b278c84d909e519e93c65762c7e74156906f117c"
+        },
+        {
+          "start": "0x80019500",
+          "end": "0x8001ce90",
+          "reason": "data segment in decomp config",
+          "sha256": "65733960387cfc6bd9133be2da4dd93a50d0de20a5f9539d74f1dc8e304c8dc9"
+        }
+      ],
+      "reference_sha1": "3a9943f5922c2bcd8a5960bf29c738a705d15eac",
+      "reference_size": 52880,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/SV.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800100d8",
+          "reason": "rodata segment in decomp config",
+          "sha256": "f3541008f5bf4978ac6596395bf317107394b3eb82fbdd22a615c4a32940436f"
+        },
+        {
+          "start": "0x800172d0",
+          "end": "0x8001d214",
+          "reason": "data segment in decomp config",
+          "sha256": "402084e11666c682461a9ab7f20dab3c844d7049a58ade4ff2878a14b34bd215"
+        }
+      ],
+      "reference_sha1": "7a5b3a3f15a61ebb69e1fe98893a7fa9e3289407",
+      "reference_size": 53780,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/TD.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010190",
+          "reason": "rodata segment in decomp config",
+          "sha256": "c48cb380162e6d22469c9dfa9bac82e1deb4ac921dd1bb73c65fcc6dd03f290f"
+        },
+        {
+          "start": "0x80019c40",
+          "end": "0x8001d560",
+          "reason": "data segment in decomp config",
+          "sha256": "af126146cb4578888c41983d7f46e5eb501d733275a5cd36407296dea80d3f13"
+        }
+      ],
+      "reference_sha1": "c958769c122aaf82080a696b6ffd490bfe7663c2",
+      "reference_size": 54624,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/TL.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x80010080",
+          "reason": "rodata segment in decomp config",
+          "sha256": "458f8426ed0cf69c7e2026f11885a9b09dd959b417dedb26471aa58178241cb5"
+        },
+        {
+          "start": "0x80018120",
+          "end": "0x80018f24",
+          "reason": "data segment in decomp config",
+          "sha256": "be6c2bd4a0582309ed479b4e27bbc10f403fd2e376635655990adc58785edd95"
+        }
+      ],
+      "reference_sha1": "b511b56db83862ed017fc72cdbb833f2e06de58e",
+      "reference_size": 36644,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_files",
+      "files": [
+        "OVERLAYS/ZL.BIN"
+      ],
+      "excluded_ranges": [
+        {
+          "start": "0x80010000",
+          "end": "0x800101a0",
+          "reason": "rodata segment in decomp config",
+          "sha256": "91d7786586e5cd1a2511a269718f722346a42560d369d6ab54d2eab986687ac1"
+        },
+        {
+          "start": "0x8001c838",
+          "end": "0x80021204",
+          "reason": "data segment in decomp config",
+          "sha256": "151d39dccbec510985d874e5db06e2437e9e0f8c4d43766e7e9ffe5687586ec9"
+        }
+      ],
+      "reference_sha1": "37bbf2910f86cb3629d9dac3576017a9aac63433",
+      "reference_size": 70148,
+      "load_addr": "0x80010000",
+      "allow_missing": true
+    },
+    {
+      "method": "fixed_address_extents",
+      "mod_package": "medievil-wide",
+      "allow_missing": true,
+      "excluded_ranges": [
+        {
+          "start": "0x800a9838",
+          "end": "0x800a9840",
+          "reason": "rodata segment in decomp config",
+          "sha256": "64ff715f9810fed4ee2769b810141d56f98285eb414a18bd29de4926bc8b7d10"
+        },
+        {
+          "start": "0x800baf78",
+          "end": "0x800baf80",
+          "reason": "rodata segment in decomp config",
+          "sha256": "2e71d2638550c15d2f0ea3e3385135f7af13e5f1953feab1dc56def4e5c66bbb"
+        },
+        {
+          "start": "0x800c532c",
+          "end": "0x800edca4",
+          "reason": "data segment in decomp config",
+          "sha256": "6208eab1979fd0ae6d8fdce8d991600182ee24a6c5e83f9fbf65aec26ded9517"
+        }
+      ],
+      "extents": [
+        {
+          "file": "MEDIEVIL.EXE",
+          "file_offset": "0x800",
+          "base": "0x80021ca4",
+          "address": "0x80021ca4",
+          "load_addr": "0x80021ca4",
+          "size": "0xcc000",
+          "sha256": "2d9adcdc3e86cbca0add1b0142bfef2d9f9ccc88b85b49b40c8016070f3425c4",
+          "entries": [
+            "0x80099a54"
+          ]
+        }
+      ]
+    }
+  ],
+  "mod_packages": [
+    {
+      "name": "medievil-wide",
+      "id": "medievil.enhancement.widescreen",
+      "version": "1.0.0",
+      "manifest": "mods/preloaded/packages/medievil.enhancement.widescreen/1.0.0/manifest.toml",
+      "manifest_sha256": "3b8d38d60e52a98ec1907b5d572be06d7c56ffe65d7b8a460267d1e87f8e5e29",
+      "features": {
+        "widescreen": {}
+      },
+      "plugins": [
+        "medievil.widescreen"
+      ]
+    }
+  ]
+}
