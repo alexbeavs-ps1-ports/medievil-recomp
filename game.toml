@@ -18,12 +18,15 @@ out_dir = "disc"
 bin_name = "disc1.bin"
 cue_name = "disc1.cue"
 boot_exe = "SCUS_942.27"
-known_sizes = [561744624]
+# Accept both combined and split-track USA dumps; retain digest validation.
+known_sizes = [561744624, 528755472]
 known_md5 = [
   "4be211c0df746cdd8c3905467eaa103e",
+  "53d908f5bd11d86f3deda75c2da3b750",
 ]
 known_sha1 = [
   "8536f740358f05ab15e501da41572df1eddfc1ce",
+  "928257764f5107c9d27aa3e2d469c43aee591abd",
 ]
 
 [recompiler]
@@ -35,7 +38,13 @@ strict = true
 window_title = "MediEvil Recompiled"
 memcard_dir = "saves"
 bios_hle = false
-openbios = false
+# Skip the BIOS shell; OpenBIOS still initializes its kernel and loads the EXE.
+fast_boot = true
+# Bundled OpenBIOS is the default when no retail BIOS was explicitly chosen.
+# Intro/engine startup validated; gameplay and save/load qualification pending.
+openbios = true
+# Keep the native fallback cache available for code not covered by offline AOT.
+overlay_cache = true
 
 [video]
 renderer = "opengl"
