@@ -1,0 +1,175 @@
+format_version = 7
+id = "medievil.enhancement.widescreen"
+version = "1.0.0"
+name = "MediEvil Adaptive View"
+author = "MediEvil Recompiled"
+license = "GPL-3.0-only"
+description = "Adaptive rendering, extended terrain distance and configurable subdivision."
+resolver = "declarative"
+save_compatibility = "shared"
+
+[[target]]
+game_id = "SCUS-94227"
+disc_sha256 = "d522a86c154524d634a0d9b84b2048b41cafe83013a87f2fa31a2c117aabce82"
+
+[[feature]]
+id = "widescreen"
+name = "Adaptive View"
+description = "Render additional world geometry to fit the window. Menus and movies retain their original proportions."
+group = "Display"
+default_enabled = true
+
+[[option]]
+feature = "widescreen"
+id = "aspect"
+label = "View"
+type = "choice"
+default = "Fit"
+
+[[option.choice]]
+value = "Fit"
+label = "Fit to Window"
+
+[[option.choice]]
+value = "4:3"
+label = "4:3"
+
+[[option.choice]]
+value = "16:9"
+label = "16:9"
+
+[[option.choice]]
+value = "21:9"
+label = "21:9"
+
+[[option.choice]]
+value = "32:9"
+label = "32:9"
+
+[[plugin]]
+feature = "widescreen"
+id = "medievil.widescreen"
+
+[[option]]
+feature = "widescreen"
+id = "draw_distance"
+label = "Draw distance"
+type = "choice"
+default = "3x"
+
+[[option.choice]]
+value = "1x"
+label = "Original"
+
+[[option.choice]]
+value = "2x"
+label = "Extended (2x)"
+
+[[option.choice]]
+value = "3x"
+label = "Extended (3x)"
+
+[[option]]
+feature = "widescreen"
+id = "subdivision_bypass"
+label = "Bypass terrain subdivision"
+type = "boolean"
+default = "true"
+
+# Capture-list reference at 0x80051104.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423857248
+expected = "0f 80 03 3c"
+replace = "30 80 03 3c"
+
+# Capture-list reference at 0x80051108.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423857252
+expected = "24 ea 60 ac"
+replace = "00 00 60 ac"
+
+# Capture-list reference at 0x80051560.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423858364
+expected = "0f 80 02 3c"
+replace = "30 80 02 3c"
+
+# Capture-list reference at 0x8005156c.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423858376
+expected = "0f 80 02 3c"
+replace = "30 80 02 3c"
+
+# Capture-list reference at 0x80051570.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423858380
+expected = "24 ea 43 8c"
+replace = "00 00 43 8c"
+
+# Capture-list reference at 0x8005157c.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423858392
+expected = "24 ea 44 24"
+replace = "00 00 44 24"
+
+# Capture-list reference at 0x80051f54.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423860912
+expected = "0f 80 02 3c"
+replace = "30 80 02 3c"
+
+# Capture-list reference at 0x80051f58.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423860916
+expected = "24 ea 42 24"
+replace = "00 00 42 24"
+
+# Capture-list reference at 0x80052094.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423861232
+expected = "0f 80 03 3c"
+replace = "30 80 03 3c"
+
+# Capture-list reference at 0x80052098.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423861236
+expected = "24 ea 63 24"
+replace = "00 00 63 24"
+
+# Capture-list reference at 0x80022108.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423664740
+expected = "00 10 0a 29"
+replace = "00 00 0a 29"
+when = { subdivision_bypass = "true" }
+
+# Capture-list reference at 0x8002279c.
+[[patch]]
+feature = "widescreen"
+target = "disc_user"
+offset = 423666424
+expected = "00 10 0a 29"
+replace = "00 00 0a 29"
+when = { subdivision_bypass = "true" }

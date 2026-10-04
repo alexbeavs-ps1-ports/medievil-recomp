@@ -1,0 +1,51 @@
+format_version = 5
+id = "medievil.enhancement.texture-filtering"
+version = "1.0.0"
+name = "Stable World Texture Filtering"
+author = "MediEvil Recompiled"
+license = "GPL-3.0-only"
+description = "Reduce texture shimmer on distant and slanted surfaces while keeping HUD sprites sharp."
+resolver = "declarative"
+save_compatibility = "shared"
+
+[[target]]
+game_id = "SCUS-94227"
+
+[[feature]]
+id = "texture-filtering"
+name = "World Texture Filtering"
+description = "Stable filtering uses a bounded palette-aware footprint on OpenGL with PGXP geometry. UI stays nearest; other backends use bilinear. Disabling restores the Display setting."
+group = "Graphics"
+default_enabled = true
+
+[[option]]
+feature = "texture-filtering"
+id = "filter"
+label = "Texture filter"
+type = "choice"
+default = "stable"
+
+[[option.choice]]
+value = "nearest"
+label = "Nearest"
+[[option.choice]]
+value = "bilinear"
+label = "Bilinear"
+[[option.choice]]
+value = "stable"
+label = "Stable minification"
+
+[[plugin]]
+feature = "texture-filtering"
+id = "medievil.filter.nearest"
+when = { filter = "nearest" }
+
+[[plugin]]
+feature = "texture-filtering"
+id = "medievil.filter.bilinear"
+when = { filter = "bilinear" }
+
+[[plugin]]
+feature = "texture-filtering"
+id = "medievil.filter.stable"
+when = { filter = "stable" }

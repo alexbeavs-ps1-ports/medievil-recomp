@@ -1,5 +1,33 @@
 # MediEvil validation receipt
 
+The receipt below records the original standup. The 2026-10-02 enhancement
+branch's source inputs, AOT audit, Release build and headless startup results are
+recorded in [ENHANCEMENTS.md](ENHANCEMENTS.md). Neither receipt establishes full
+gameplay quality.
+
+The enhancement branch defaults to bundled OpenBIOS with the BIOS shell skipped.
+Its adaptive native-wide view has been checked through Dan's Crypt, including
+dialogue, player movement, 16:9/21:9/32:9 and live window resizing. Engine and
+level entries used static native dispatch. Wider capture and culling hooks
+retain the original vertical/depth tests. The latest build uses the 1080p
+preset, PGXP geometry/perspective correction and CPU provenance by default.
+Terrain distance defaults to 3x; Original and 2x are selectable, and
+subdivision bypass defaults on. Both selections have separately verified native
+AOT images. Smooth Presentation defaults on at Display refresh, with fixed
+60/120/144/240/360 choices and original simulation timing. PGXP now belongs to
+a default-on mod whose session choice survives renderer initialization.
+The final default-state Crypt route showed the room beyond the closed gate
+from the coffin and gate-side views, with no cells shed by the capture budget.
+The gate was not crossed in that route. Display requested 165 Hz and achieved
+about 132 presents/sec; steady target throughput remains unqualified. See the
+enhancement receipt for the measured timing and option states.
+Saturation-aware terrain winding
+and conservative tall-wall capture fill the previously observed Crypt gaps.
+Audio, save/load and the remaining
+levels have not been qualified by that route. Earlier checks also compared
+intro/engine behavior against the owned disc and a retail BIOS.
+The historical retail-only requirement below does not describe this branch.
+
 ## Scope
 
 - Game: MediEvil, USA, `SCUS-94227`
