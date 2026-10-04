@@ -1,0 +1,30 @@
+format_version = 5
+id = "psx.enhancement.pgxp"
+version = "1.0.0"
+name = "MediEvil PGXP Precision"
+author = "MediEvil Recompiled"
+license = "GPL-3.0-only"
+description = "Subpixel geometry and perspective-correct textures using the shared PGXP backend."
+resolver = "declarative"
+save_compatibility = "shared"
+
+[[target]]
+game_id = "SCUS-94227"
+
+[[feature]]
+id = "pgxp"
+name = "PGXP Precision"
+description = "Reduce polygon wobble and texture warping. Precision is validated against the actual packet words."
+group = "Visual"
+default_enabled = true
+
+[[option]]
+feature = "pgxp"
+id = "cpu_mode"
+label = "CPU precision propagation"
+type = "boolean"
+default = "true"
+
+[[plugin]]
+feature = "pgxp"
+id = "psx.pgxp"

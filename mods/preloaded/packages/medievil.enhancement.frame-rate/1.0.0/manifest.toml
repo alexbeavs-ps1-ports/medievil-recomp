@@ -1,0 +1,71 @@
+format_version = 5
+id = "medievil.enhancement.frame-rate"
+version = "1.0.0"
+name = "MediEvil Smooth Presentation"
+author = "MediEvil Recompiled"
+license = "GPL-3.0-only"
+description = "Motion-adaptive frame blending at the display refresh or a chosen presentation rate."
+resolver = "declarative"
+save_compatibility = "shared"
+
+[[target]]
+game_id = "SCUS-94227"
+
+[[feature]]
+id = "frame-rate"
+name = "Smooth Presentation"
+description = "Blend completed game images without changing gameplay speed, input, timers or audio. Requires OpenGL."
+group = "Frame Rate"
+default_enabled = true
+
+[[option]]
+feature = "frame-rate"
+id = "rate"
+label = "Presentation rate"
+description = "Display follows the current monitor refresh for even cadence."
+type = "choice"
+default = "display"
+
+[[option.choice]]
+value = "display"
+label = "Display"
+[[option.choice]]
+value = "60"
+label = "60 FPS"
+[[option.choice]]
+value = "120"
+label = "120 FPS"
+[[option.choice]]
+value = "144"
+label = "144 FPS"
+[[option.choice]]
+value = "240"
+label = "240 FPS"
+[[option.choice]]
+value = "360"
+label = "360 FPS"
+
+[[plugin]]
+feature = "frame-rate"
+id = "medievil.framerate.display"
+when = { rate = "display" }
+[[plugin]]
+feature = "frame-rate"
+id = "medievil.framerate.60"
+when = { rate = "60" }
+[[plugin]]
+feature = "frame-rate"
+id = "medievil.framerate.120"
+when = { rate = "120" }
+[[plugin]]
+feature = "frame-rate"
+id = "medievil.framerate.144"
+when = { rate = "144" }
+[[plugin]]
+feature = "frame-rate"
+id = "medievil.framerate.240"
+when = { rate = "240" }
+[[plugin]]
+feature = "frame-rate"
+id = "medievil.framerate.360"
+when = { rate = "360" }
