@@ -24,6 +24,10 @@ set(PSX_SETUP_WIZARD ON CACHE BOOL
     "Advertise first-run setup wizard + Generate & rebuild in recomp-ui" FORCE)
 include("${PSXRECOMP_ROOT}/runtime/runtime.cmake")
 
+if(NOT COMMAND psxrecomp_execution_profile)
+    message(FATAL_ERROR "MediEvil requires build-selected execution profiles")
+endif()
+
 psxrecomp_add_game_runtime(psx-runtime
     PGXP
     # ENABLE_NETPLAY_IF_PRESENT

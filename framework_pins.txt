@@ -1,4 +1,4 @@
-psxrecomp=a916ed5 (a916ed52e00f364a8615b97cd597858aa7f385dc)
+psxrecomp=20b0ea0 (20b0ea04bcc87642a2eac3e2059de1004fb1ee33)
 recomp-ui=03d58aa (03d58aa098fc4c2ca944ee43659cb45ce586362a)
 recomp-net=e2491d2 (e2491d2a78e37fb18fca087ebc34ad8261caae9c)
 retcomm-rbengine=2a03e73 (2a03e73693acee0fb78076ea058642c931bef12e)

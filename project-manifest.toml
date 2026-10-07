@@ -18,9 +18,9 @@ entry_point = "0x801B5CD0"
 [framework]
 name = "PSXRecomp"
 repository = "https://github.com/RetroPortingToolKit/psxrecomp.git"
-# Canonical upstream master after the validated MediEvil shared series.
-commit = "a916ed52e00f364a8615b97cd597858aa7f385dc"
-tree = "7293a6e386ffdcf81ac74adc6d26a5505f7319d0"
+# Frozen local parity candidate; owner acceptance remains pending.
+commit = "20b0ea04bcc87642a2eac3e2059de1004fb1ee33"
+tree = "c3ea5ee9545a62a71ee3c4d03cc8a1032a7b17cd"
 recomp_ui_commit = "03d58aa098fc4c2ca944ee43659cb45ce586362a"
 license = "See the pinned dependency license; this binding does not approve commercial use."
 

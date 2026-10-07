@@ -1,7 +1,10 @@
 # MediEvil enhancement implementation notes
 
-Current framework: canonical upstream `master` at `a916ed52e00f364a8615b97cd597858aa7f385dc`
-(tree `7293a6e386ffdcf81ac74adc6d26a5505f7319d0`). The shared PRs 485, 486 and 498-501
+Current parity candidate: shared framework `20b0ea04bcc87642a2eac3e2059de1004fb1ee33`
+(tree `c3ea5ee9545a62a71ee3c4d03cc8a1032a7b17cd`). Its build and owner acceptance
+are tracked in [PARITY_QUALIFICATION.md](PARITY_QUALIFICATION.md). The historical
+upstream baseline was `a916ed52e00f364a8615b97cd597858aa7f385dc`.
+The shared PRs 485, 486 and 498-501
 are merged. The combined framework passed the bounded MMX6, Tomba, Tomba 2
 and Ape Escape regression suite plus focused runtime, codegen and real-GL tests.
 Historical integration pins below describe earlier work; the gitlink and
@@ -128,17 +131,19 @@ available. BIOS selection and SDK replacement are separate decisions.
 
 ## HLE replacement contract
 
-Owner direction: HLE may replace LLE components when it maintains a reasonable
-API contract with the existing path. Implement replacements behind the same
-guest-facing interface and retain the LLE path as a reference and fallback.
+Owner direction: HLE may replace LLE components behind the same caller-facing
+interface. Keep separately buildable ENHANCED (default) and REFERENCE binaries;
+do not introduce runtime backend switches or cross-profile save obligations.
+No MediEvil-specific loader replacement is implemented in this milestone.
 
 The contract covers arguments, return values, errors, register preservation,
 guest-memory writes and observable device state. Preserve callback identity and
 ordering, interrupt delivery, busy/completion states, and blocking versus
 nonblocking behavior. Maintain guest scheduling and frame cadence; matching the
 original internal instruction sequence is unnecessary when observable behavior
-is preserved. Any deliberate timing enhancement needs an explicit option and
-documented behavior.
+is preserved. Internal batching, skipped polling and approximate timing may
+improve performance without recreating instruction-by-instruction timing.
+Tiny player-unnoticeable differences follow the shared template HLE policy.
 
 For example, a host implementation of CdRead must write the expected guest
 buffer and preserve command status, error and completion/callback behavior.
@@ -150,8 +155,9 @@ Keep state deterministic and include backend state in save/restore or rollback
 when those services use it. Validate verified call sequences against the LLE
 reference, comparing guest-visible outputs, side effects and event ordering.
 Document tolerances for observable timing rather than assuming a host-fast
-return is compatible. Unsupported API variants or failed identity checks stay
-on LLE.
+return is compatible. Define supported scope and select REFERENCE when the
+replacement does not support a required API variant. Existing native coverage
+fallback is a separate mechanism.
 
 Put reusable API adapters, identity checks and backend selection in PSXRecomp;
 keep MediEvil addresses and activation policy in this port. Begin with a bounded
