@@ -16,7 +16,7 @@ id = "frame-rate"
 name = "Smooth Presentation"
 description = "Render intermediate camera and model poses without changing gameplay speed, input, timers or audio. Requires OpenGL."
 group = "Frame Rate"
-default_enabled = true
+default_enabled = false
 
 [[option]]
 feature = "frame-rate"
