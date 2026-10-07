@@ -19,8 +19,8 @@ entry_point = "0x801B5CD0"
 name = "PSXRecomp"
 repository = "https://github.com/RetroPortingToolKit/psxrecomp.git"
 # Frozen local parity candidate; owner acceptance remains pending.
-commit = "20b0ea04bcc87642a2eac3e2059de1004fb1ee33"
-tree = "c3ea5ee9545a62a71ee3c4d03cc8a1032a7b17cd"
+commit = "e5e2dca85c2e7c1758c6de27870599103a1f8bfc"
+tree = "13056da1d5992c7e5cd88e9fadcf562979d6e296"
 recomp_ui_commit = "03d58aa098fc4c2ca944ee43659cb45ce586362a"
 license = "See the pinned dependency license; this binding does not approve commercial use."
 
