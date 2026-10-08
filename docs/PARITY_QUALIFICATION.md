@@ -40,7 +40,9 @@ There is no MediEvil I asset-loader adapter yet. The code overlays are already
 uncompressed, so MediEvil II's PP20 decoder is not applicable. Title-specific
 asset loading and broader residency remain open; no loading-speed improvement
 is claimed. The headless Ghidra registry timed out during this bounded
-inspection, and the historical decomp source link was unavailable.
+inspection. The pinned decomp source was retrieved using the profile's exact
+commit; its engine file is an inventory of unnamed assembly functions, without
+an identified asset-loader contract.
 
 Light validation covers real terrain/fog record contracts, exact manifest
 bindings and guarded AOT generation, compilation, and a short OpenBIOS startup.
@@ -49,7 +51,7 @@ Human review checks gameplay, audio, transitions and the three controls:
 1. Start New Game and reach Dan's Crypt.
 2. Rotate the camera near walls and the gate; check world edges and textures.
 3. Disable and re-enable each view feature independently; compare terrain
-   reach and subdivision with interpolation left off.
+   reach and subdivision with interpolation left off; restart if the UI asks.
 4. Leave the Crypt, check HUD and dialogue, and save/load if convenient.
 
 No release, Linux package, all-level acceptance or measured loading gain is
