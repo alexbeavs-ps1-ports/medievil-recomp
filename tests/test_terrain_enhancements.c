@@ -19,6 +19,7 @@ int32_t psx_mod_widescreen_x_margin(void) { return 578; }
 uint32_t psx_mod_display_width(void) { return 512; }
 int psx_mod_set_main_ram_8mb(int v) { return v; }
 void psx_mod_set_native_wide_projection_correction(int v) { (void)v; }
+void psx_mod_set_native_wide_near_clip(int v) { (void)v; }
 void psx_mod_set_native_wide_nclip_sites(const uint32_t*a,const uint32_t*b,int n) { (void)a;(void)b;(void)n; }
 int psx_mod_option_value(const char*a,const char*b,const char*c,char*d,uint32_t n) { (void)a;(void)b;(void)c;(void)n;*d=0;return 0; }
 int psx_mod_set_fixed_display_aspect(uint32_t n,uint32_t d) { (void)n;(void)d;return 1; }

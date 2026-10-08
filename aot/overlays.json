@@ -764,14 +764,16 @@
       "id": "medievil.enhancement.widescreen",
       "version": "1.0.0",
       "manifest": "mods/preloaded/packages/medievil.enhancement.widescreen/1.0.0/manifest.toml",
-      "manifest_sha256": "28340fe26df8431d09427dbbc899bfe6d7e703e455f8663c6727f0803f306d7b",
+      "manifest_sha256": "28fb13effb7a015755ae1de8b61718996189fb7affa0ea36c76d7498b715f45f",
       "features": {
-        "widescreen": {
-          "subdivision_bypass": false
+        "widescreen": {},
+        "draw-distance": {
+          "draw_distance": "3x"
         }
       },
       "plugins": [
-        "medievil.widescreen"
+        "medievil.widescreen",
+        "medievil.draw-distance"
       ]
     },
     {
@@ -779,14 +781,18 @@
       "id": "medievil.enhancement.widescreen",
       "version": "1.0.0",
       "manifest": "mods/preloaded/packages/medievil.enhancement.widescreen/1.0.0/manifest.toml",
-      "manifest_sha256": "28340fe26df8431d09427dbbc899bfe6d7e703e455f8663c6727f0803f306d7b",
+      "manifest_sha256": "28fb13effb7a015755ae1de8b61718996189fb7affa0ea36c76d7498b715f45f",
       "features": {
-        "widescreen": {
-          "subdivision_bypass": true
-        }
+        "widescreen": {},
+        "draw-distance": {
+          "draw_distance": "3x"
+        },
+        "terrain-subdivision": {}
       },
       "plugins": [
-        "medievil.widescreen"
+        "medievil.widescreen",
+        "medievil.draw-distance",
+        "medievil.terrain-subdivision"
       ]
     }
   ]

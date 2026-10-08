@@ -51,15 +51,11 @@ feature = "widescreen"
 id = "medievil.widescreen"
 
 [[option]]
-feature = "widescreen"
+feature = "draw-distance"
 id = "draw_distance"
 label = "Draw distance"
 type = "choice"
 default = "3x"
-
-[[option.choice]]
-value = "1x"
-label = "Original"
 
 [[option.choice]]
 value = "2x"
@@ -69,12 +65,27 @@ label = "Extended (2x)"
 value = "3x"
 label = "Extended (3x)"
 
-[[option]]
-feature = "widescreen"
-id = "subdivision_bypass"
-label = "Bypass terrain subdivision"
-type = "boolean"
-default = "true"
+[[feature]]
+id = "draw-distance"
+name = "Extended Draw Distance"
+description = "Extend terrain visibility and fog reach independently of the window's aspect ratio. Disable to restore the original distance."
+group = "Display"
+default_enabled = true
+
+[[plugin]]
+feature = "draw-distance"
+id = "medievil.draw-distance"
+
+[[feature]]
+id = "terrain-subdivision"
+name = "Terrain Subdivision Fix"
+description = "Bypass the original terrain subdivision while using perspective-correct textures. Disable to restore the original terrain subdivision."
+group = "Display"
+default_enabled = true
+
+[[plugin]]
+feature = "terrain-subdivision"
+id = "medievil.terrain-subdivision"
 
 # Capture-list reference at 0x80051104.
 [[patch]]
@@ -156,20 +167,18 @@ offset = 423861236
 expected = "24 ea 63 24"
 replace = "00 00 63 24"
 
-# Capture-list reference at 0x80022108.
+# Terrain subdivision predicate at 0x80022108.
 [[patch]]
-feature = "widescreen"
+feature = "terrain-subdivision"
 target = "disc_user"
 offset = 423664740
 expected = "00 10 0a 29"
 replace = "00 00 0a 29"
-when = { subdivision_bypass = "true" }
 
-# Capture-list reference at 0x8002279c.
+# Terrain subdivision predicate at 0x8002279c.
 [[patch]]
-feature = "widescreen"
+feature = "terrain-subdivision"
 target = "disc_user"
 offset = 423666424
 expected = "00 10 0a 29"
 replace = "00 00 0a 29"
-when = { subdivision_bypass = "true" }

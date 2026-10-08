@@ -7,6 +7,8 @@
 
 #define PKG "medievil.enhancement.widescreen"
 #define PLUGIN "medievil.widescreen"
+#define DISTANCE_PLUGIN "medievil.draw-distance"
+#define SUBDIVISION_PLUGIN "medievil.terrain-subdivision"
 
 /* Guest-owned capture records and cleanup sentinel retain their stock layout.
  * Only render data occupy expanded RAM; the original heap allocation remains
@@ -21,7 +23,7 @@ enum {
     TERRAIN = 0x800EEDC0u, CORNERS = 0x800EEA04u
 };
 
-static unsigned distance_scale = 3, bypass_subdivision = 1;
+static unsigned distance_scale = 1, bypass_subdivision = 0;
 
 static int ram(uint32_t p, uint32_t bytes) {
     return p >= 0x80010000u && p < 0x80200000u &&
@@ -220,8 +222,6 @@ static void render(CPUState* cpu, uint32_t address) {
 }
 
 static void activate(void) {
-    distance_scale = 3;
-    bypass_subdivision = 1;
     char view[16];
     if (!psx_mod_set_main_ram_8mb(1)) {
         fprintf(stderr, "MediEvil: expanded render memory unavailable\n");
@@ -232,13 +232,6 @@ static void activate(void) {
     const uint32_t cull_sites[] = {0x80021EACu, 0x8002249Cu, 0x800224B0u};
     const uint32_t cull_words[] = {0x1900FFCFu, 0x1D000006u, 0x0501FE4Eu};
     psx_mod_set_native_wide_nclip_sites(cull_sites, cull_words, 3);
-    char value[16];
-    if (psx_mod_option_value(PKG, "widescreen", "draw_distance", value, sizeof value)) {
-        if (!strcmp(value, "1x")) distance_scale = 1;
-        else if (!strcmp(value, "2x")) distance_scale = 2;
-    }
-    if (psx_mod_option_value(PKG, "widescreen", "subdivision_bypass", value, sizeof value))
-        bypass_subdivision = !strcmp(value, "true");
     if (!psx_mod_option_value(PKG, "widescreen", "aspect", view, sizeof view))
         strcpy(view, "Fit");
     unsigned numerator = 16;
@@ -252,11 +245,30 @@ static void activate(void) {
     if (!strcmp(view, "Fit")) (void)psx_mod_set_adaptive_display_aspect(0, 0);
 }
 
+static void activate_distance(void) {
+    char value[16];
+    distance_scale = 3;
+    if (!psx_mod_set_main_ram_8mb(1)) {
+        fprintf(stderr, "MediEvil: expanded distance memory unavailable\n");
+        abort();
+    }
+    if (psx_mod_option_value(PKG, "draw-distance", "draw_distance", value, sizeof value) &&
+        !strcmp(value, "2x")) distance_scale = 2;
+}
+
+static void activate_subdivision(void) {
+    /* The selected feature owns guarded disc patches/AOT variants; this
+     * activation records their selection without rewriting executable RAM. */
+    bypass_subdivision = 1;
+}
+
 PSX_MOD_CONSTRUCTOR(medievil_register_widescreen) {
     (void)psx_mod_register_activation_plugin(PLUGIN, activate);
     (void)psx_mod_register_function_filter_plugin(PLUGIN, 0x8005176Cu, capture);
     (void)psx_mod_register_function_entry_plugin(PLUGIN, 0x80021CECu, render);
-    (void)psx_mod_register_function_entry_plugin(PLUGIN, 0x800514FCu, distance);
-    (void)psx_mod_register_function_filter_plugin(PLUGIN, 0x8007A02Cu, fog_init);
-    (void)psx_mod_register_function_filter_plugin(PLUGIN, 0x8007A0C0u, fog_free);
+    (void)psx_mod_register_activation_plugin(DISTANCE_PLUGIN, activate_distance);
+    (void)psx_mod_register_function_entry_plugin(DISTANCE_PLUGIN, 0x800514FCu, distance);
+    (void)psx_mod_register_function_filter_plugin(DISTANCE_PLUGIN, 0x8007A02Cu, fog_init);
+    (void)psx_mod_register_function_filter_plugin(DISTANCE_PLUGIN, 0x8007A0C0u, fog_free);
+    (void)psx_mod_register_activation_plugin(SUBDIVISION_PLUGIN, activate_subdivision);
 }

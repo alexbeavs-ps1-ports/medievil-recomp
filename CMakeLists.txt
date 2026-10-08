@@ -51,8 +51,12 @@ psxrecomp_add_game_runtime(psx-runtime
 
 # The pinned runtime uses RNetHostRelayStatus in its launcher even with
 # PSX_NETPLAY=OFF. Supply the declarations without enabling netplay.
-target_include_directories(psx-runtime PRIVATE
-    "${PSXRECOMP_ROOT}/lib/recomp-net/include")
+if(RECOMP_NET_ROOT)
+    target_include_directories(psx-runtime PRIVATE "${RECOMP_NET_ROOT}/include")
+else()
+    target_include_directories(psx-runtime PRIVATE
+        "${PSXRECOMP_ROOT}/lib/recomp-net/include")
+endif()
 target_sources(psx-runtime PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_widescreen.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_texture_filter.c"
