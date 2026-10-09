@@ -36,13 +36,13 @@ its target definitions; it has no DLL flavor or cache namespace. Original byte
 guards and generated-file receipts remain required. This inventory does not
 prove full native coverage of every level.
 
-There is no MediEvil I asset-loader adapter yet. The code overlays are already
-uncompressed, so MediEvil II's PP20 decoder is not applicable. Title-specific
-asset loading and broader residency remain open; no loading-speed improvement
-is claimed. The headless Ghidra registry timed out during this bounded
-inspection. The pinned decomp source was retrieved using the profile's exact
-commit; its engine file is an inventory of unnamed assembly functions, without
-an identified asset-loader contract.
+A title-owned resource loader is prepared separately under
+`beads-eio.18.14`; see [its caller contract](RESIDENT_LOADING.md). The code
+overlays are already uncompressed, so MediEvil II's PP20 decoder is not
+applicable. The resource ABI was identified from the original executable.
+Native resource bytes/status matched for 17 reads, and the enhanced path
+removed the measured waits for those reads. The separate reference build also
+reached the Crypt. Owner loading/audio/transition review remains pending.
 
 Light validation covers real terrain/fog record contracts, exact manifest
 bindings and guarded AOT generation, compilation, and a short OpenBIOS startup.
@@ -54,5 +54,7 @@ Human review checks gameplay, audio, transitions and the three controls:
    reach and subdivision with interpolation left off; restart if the UI asks.
 4. Leave the Crypt, check HUD and dialogue, and save/load if convenient.
 
-No release, Linux package, all-level acceptance or measured loading gain is
-claimed by this preparation.
+The owner approved the current visual setup on 2026-10-08, built from source
+`7860f38`. That approval covers the existing three-control review build;
+the new resource loader still requires separate validation. No release,
+Linux package or all-level acceptance is claimed by this preparation.

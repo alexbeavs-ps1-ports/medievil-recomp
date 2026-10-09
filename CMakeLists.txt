@@ -64,6 +64,20 @@ target_sources(psx-runtime PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_texture_filter.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_frame_rate.cpp")
 
+psxrecomp_add_implementation(psx-runtime
+    NAME medievil-resident-resource CONTRACT scus94227-mwd-resource-request-v1
+    HLE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_resident.cpp"
+    LLE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_resident_reference.cpp"
+    CONTRACT_FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_resident.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/mods/medievil_resident_catalog.inc"
+        "${CMAKE_CURRENT_SOURCE_DIR}/tools/medievil_resident_catalog.py"
+        "${PSXRECOMP_ROOT}/tools/resident_catalog.py"
+        "${PSXRECOMP_ROOT}/runtime/include/mod_resident.h"
+        "${PSXRECOMP_ROOT}/runtime/include/mod_plugins.h"
+        "${PSXRECOMP_ROOT}/runtime/src/mod_resident.cpp"
+        "${PSXRECOMP_ROOT}/runtime/src/mod_guest_services.c")
+
 option(MEDIEVIL_BUILD_TESTS "Build MediEvil terrain contract checks" OFF)
 if(MEDIEVIL_BUILD_TESTS)
     enable_testing()

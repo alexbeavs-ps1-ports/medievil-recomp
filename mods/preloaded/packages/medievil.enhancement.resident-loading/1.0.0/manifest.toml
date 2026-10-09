@@ -1,0 +1,22 @@
+format_version = 5
+id = "medievil.enhancement.resident-loading"
+version = "1.0.0"
+name = "Resident Loading"
+author = "mstan"
+description = "Cache your disc's resource archive and accelerate supported native asset requests."
+resolver = "declarative"
+save_compatibility = "shared"
+
+[[target]]
+game_id = "SCUS-94227"
+
+[[feature]]
+id = "resident-loading"
+name = "Resident Loading"
+description = "Load verified archive resources from memory. Original decoding and graphics/sound uploads remain active; movies and streamed audio keep their native paths."
+group = "Gameplay"
+default_enabled = true
+
+[[plugin]]
+feature = "resident-loading"
+id = "medievil.resident"

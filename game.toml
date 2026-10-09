@@ -33,7 +33,7 @@ known_sha1 = [
 seeds = "seeds/ghidra_funcs.txt"
 out_dir = "generated"
 strict = true
-mod_function_entry_funcs = ["0x8005176C", "0x80021CEC", "0x800514FC", "0x8007A02C", "0x8007A0C0", "0x8009BC64"]
+mod_function_entry_funcs = ["0x8005176C", "0x80021CEC", "0x800514FC", "0x8007A02C", "0x8007A0C0", "0x8009BC64", "0x800A8200", "0x800A8338"]
 mod_instruction_sites = ["0x800239BC"]
 
 [runtime]
