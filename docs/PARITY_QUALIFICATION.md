@@ -42,7 +42,8 @@ overlays are already uncompressed, so MediEvil II's PP20 decoder is not
 applicable. The resource ABI was identified from the original executable.
 Native resource bytes/status matched for 17 reads, and the enhanced path
 removed the measured waits for those reads. The separate reference build also
-reached the Crypt. Owner loading/audio/transition review remains pending.
+reached the Crypt. The owner approved the loading review candidate on
+2026-10-08 and requested a commit and continuation without another build.
 
 Light validation covers real terrain/fog record contracts, exact manifest
 bindings and guarded AOT generation, compilation, and a short OpenBIOS startup.
@@ -56,5 +57,6 @@ Human review checks gameplay, audio, transitions and the three controls:
 
 The owner approved the current visual setup on 2026-10-08, built from source
 `7860f38`. That approval covers the existing three-control review build;
-the new resource loader still requires separate validation. No release,
-Linux package or all-level acceptance is claimed by this preparation.
+the new resource loader received separate owner approval later the same day
+on implementation `e3fd449`. No release, Linux package or all-level acceptance
+is claimed by this preparation.

@@ -68,6 +68,10 @@ its execution identity is
 
 The separate REFERENCE build also reached the Crypt and exited cleanly,
 with only `medievil.resident.reference=1` and no resident reads served. It
-retains the original loader. Owner gameplay/audio/level-transition review is
-pending. Hidden checks disable audio/controllers; they do not qualify music
-startup, every level, resource mods or cross-build savestates.
+retains the original loader. On 2026-10-08 the owner approved the resident
+loading review candidate and requested that it be committed and the serial
+queue continued. The implementation is `e3fd449` on
+`feat/medievil1-parity-hle-20261006`; no release was requested.
+Hidden checks disable audio/controllers. This bounded qualification and owner
+acceptance do not establish every-level or resource-mod coverage, or
+cross-build savestate compatibility.
