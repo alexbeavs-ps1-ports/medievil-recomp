@@ -468,6 +468,10 @@ jobs:
           if command -v glslc >/dev/null 2>&1; then
             EXTRA+=("-DGLSLC_EXE=$(command -v glslc)")
           fi
+          if [[ "${{ matrix.artifact }}" == "linux-x64" ]]; then
+            # Focal's GCC 9 lacks a WebP AVX2 intrinsic; keep its portable decoder.
+            EXTRA+=("-DWEBP_ENABLE_SIMD=OFF")
+          fi
           JOBS="$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
           # Emitters may have set PSXRECOMP_TOOLCHAIN_DIR (llvm-mingw) via
           # GITHUB_ENV. Clear it before the MSYS2 g++ setup-host configure so
