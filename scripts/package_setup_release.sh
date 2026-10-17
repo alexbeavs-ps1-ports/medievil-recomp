@@ -65,5 +65,6 @@ exec bash "${PACKAGER}" \
   --project-file THIRD_PARTY_NOTICES.md \
   --project-file README.md \
   --project-file docs/PLAYTEST_DIAGNOSTICS.md \
+  --project-dir assets \
   --project-dir seeds \
   "${EXTRA_PROJECT[@]}"
