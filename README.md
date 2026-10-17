@@ -130,9 +130,10 @@ In short: AI writes the code, but I always test it before I publish it.
 </p>
 <!-- /retcomm-readme-raid -->
 
-## v0.1.1 three-platform candidate
+## Setup packages
 
-This candidate targets Windows x64, Linux x64, macOS ARM64, and macOS x64.
-These setup packages require your legally owned game disc and a supported
-regional retail BIOS. They remain unpublished until their exact package tests
-and release authorization pass.
+Release packages target Windows x64, Linux x64, macOS ARM64, and macOS x64.
+They require your legally owned game disc and a supported regional retail
+BIOS. Input Recording and Input Display are enabled by default; see the
+[diagnostics guide](docs/PLAYTEST_DIAGNOSTICS.md). HD texture packs and their
+controls are excluded from the bundled mod catalog.
