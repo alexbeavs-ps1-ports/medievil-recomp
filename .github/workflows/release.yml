@@ -223,10 +223,6 @@ jobs:
         shell: bash
         run: bash psxrecomp/tools/ci/record_pins.sh
 
-      - name: Setup host mode (no game C / BIOS backends in CI)
-        shell: bash
-        run: bash psxrecomp/tools/ci/clear_generated.sh
-
       - name: Setup MSYS2 (Windows)
         if: runner.os == 'Windows'
         uses: msys2/setup-msys2@v2
@@ -480,9 +476,9 @@ jobs:
             unset PSXRECOMP_TOOLCHAIN_DIR TOOLCHAIN_DIR BPE_TOOLCHAIN_DIR RETCOMM_TOOLCHAIN_DIR || true
             unset CMAKE_PREFIX_PATH SDL3_DIR ZLIB_ROOT || true
           fi
-          # Setup host: no game C, no BIOS backends linked. clear_generated.sh
-          # already wiped generated/; end users Generate OpenBIOS (+ optional
-          # SCPH1001) locally via the wizard, then rebuild.
+          # FORCE_SETUP_HOST excludes generated game C and BIOS backends.
+          # End users Generate their game and supported retail BIOS locally
+          # via the wizard, then rebuild.
           # Prefer -DPSXRECOMP_FORCE_SETUP_HOST=ON (psxrecomp_add_game_runtime).
           # Legacy -DYOURGAME_FORCE_SETUP_HOST=ON still works if the title wires it.
           # PSX_SETUP_WIZARD is required with FORCE_SETUP_HOST (CMakeLists
