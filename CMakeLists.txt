@@ -31,7 +31,6 @@ psxrecomp_add_game_runtime(psx-runtime
     WINDOW_TITLE "MediEvil Recompiled"
     DEFAULT_GAME_CONFIG_PATH "game.toml"
     MAX_PLAYERS 1
-    # LAUNCHER_BOXART "${CMAKE_CURRENT_SOURCE_DIR}/launcher_assets/img/boxart.tga"
     APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/assets/psxrecomp.ico"
     GEN_MARKER "generated/SCUS_942.27_dispatch.c"
     GEN_FULL_GLOB "generated/SCUS_942.27_full_*.c"
