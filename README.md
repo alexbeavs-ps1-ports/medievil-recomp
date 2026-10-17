@@ -77,6 +77,9 @@ Optional box art under `launcher_assets/img/` may come from
 
 ## Quick start (dev)
 
+Select the original split-track CUE so preparation preserves both the data and
+audio tracks. Keep its two BIN files beside the CUE.
+
 ```bash
 git submodule update --init --recursive
 ./psxrecomp/tools/ci/build_emitters.sh

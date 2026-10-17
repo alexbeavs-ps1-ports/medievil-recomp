@@ -12,18 +12,21 @@ entry_pc = "0x801B5CD0"
 text_size = "0x00020800"
 stack_base = "0x801FFFF0"
 
-# Digests are for data Track 01 (first BINARY FILE / TRACK 01).
+# Accept the original split data track and the legacy combined BIN of the same
+# two-track disc; the split CUE preserves both data and CDDA track metadata.
 [prepare_disc]
 out_dir = "disc"
 bin_name = "disc1.bin"
 cue_name = "disc1.cue"
 boot_exe = "SCUS_942.27"
-known_sizes = [561744624]
+known_sizes = [561744624, 528755472]
 known_md5 = [
   "4be211c0df746cdd8c3905467eaa103e",
+  "53d908f5bd11d86f3deda75c2da3b750",
 ]
 known_sha1 = [
   "8536f740358f05ab15e501da41572df1eddfc1ce",
+  "928257764f5107c9d27aa3e2d469c43aee591abd",
 ]
 
 [recompiler]
