@@ -35,8 +35,14 @@ psxrecomp_add_game_runtime(psx-runtime
     APP_ICON "${CMAKE_CURRENT_SOURCE_DIR}/assets/psxrecomp.ico"
     GEN_MARKER "generated/SCUS_942.27_dispatch.c"
     GEN_FULL_GLOB "generated/SCUS_942.27_full_*.c"
+    PRELOADED_MODS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mods/preloaded"
+    EXCLUDE_BUILTIN_MODS psx.enhancement.hd-textures
     CODEGEN_SETUP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/codegen_setup.c"
 )
+
+include("${PSXRECOMP_ROOT}/runtime/playtest_diagnostics.cmake")
+psxrecomp_add_playtest_diagnostics(psx-runtime
+    GAME_ID "SCUS-94227" MOD_ID "medievil.diagnostics")
 
 # Stage runtime configs next to the exe for direct build/ launches. Only copy
 # files that exist — never fail POST_BUILD when game_options.toml is absent.

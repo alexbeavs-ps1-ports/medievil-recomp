@@ -1,0 +1,34 @@
+format_version = 5
+id = "medievil.diagnostics"
+version = "1.0.0"
+name = "Playtest Diagnostics"
+author = "MediEvil Recompiled"
+license = "GPL-3.0-only"
+description = "Records accepted inputs, controller presence, timing and CD/render evidence. Press L3 + R3 to mark a problem. Enabled by default for playtests."
+resolver = "declarative"
+save_compatibility = "shared"
+
+[[target]]
+game_id = "SCUS-94227"
+
+[[feature]]
+id = "recording"
+name = "Input Recording"
+description = "Saves inputs, session settings and starting memory cards. Zip the newest session folder when reporting a bug; disc and BIOS files are never included."
+group = "Diagnostics"
+default_enabled = true
+
+[[feature]]
+id = "osd"
+name = "Input Display"
+description = "Shows accepted P1/P2 buttons, a frame counter and REC/PLAY status. Hiding the display keeps recording enabled."
+group = "Diagnostics"
+default_enabled = true
+
+[[plugin]]
+feature = "recording"
+id = "medievil.diagnostics"
+
+[[plugin]]
+feature = "osd"
+id = "medievil.diagnostics.osd"

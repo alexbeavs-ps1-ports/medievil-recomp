@@ -14,6 +14,10 @@ Static recompilation of **MediEvil** built on
 
 MediEvil recompiled for modern systems using psxrecomp.
 
+[Playtest diagnostics](docs/PLAYTEST_DIAGNOSTICS.md) record inputs and replay
+evidence by default. The guide explains how to report a problem and verify a
+recording with the original build.
+
 | | |
 |---|---|
 | Players | 1 |
